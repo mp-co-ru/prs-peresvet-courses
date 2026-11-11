@@ -273,9 +273,16 @@ details[open] > summary .chev { transform: translateY(25%) rotate(-135deg); }
 
 .intro-section { padding-bottom: 0; }
 .prep-section { padding-bottom: 0; }
-.spoiler { margin: 0.8rem 0; }
+/* Отступы заложены всегда, чтобы заголовок не сдвигался при раскрытии; фон виден только у раскрытого */
+.spoiler { margin: 0.8rem -1rem; padding: 0.45rem 1rem; border-radius: 14px; }
+.spoiler[open] { background: #edf4f4; }
+.spoiler[open] code { background: #fff; }
 .spoiler > summary { cursor: pointer; font-weight: 400; color: var(--teal); }
 .spoiler > :not(summary) { margin-left: 1.2rem; }
+.spoiler > :last-child { margin-bottom: 0.4rem; }
+@media (max-width: 800px) {
+  .spoiler { margin-left: 0; margin-right: 0; }
+}
 .prep { padding: 1.2rem 1.4rem; }
 .prep ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
 .intro {
@@ -344,6 +351,34 @@ details[open] > summary .chev { transform: translateY(25%) rotate(-135deg); }
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; padding: 0.7rem 0.4rem; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 700; }
+
+.goal {
+  margin: 1rem 0 0.8rem;
+  padding: 1rem 1.3rem 1.1rem;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--muted);
+  border-radius: 16px;
+  background: var(--card);
+}
+.goal .k {
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.goal ul { margin: 0.45rem 0 0; padding-left: 1.2rem; }
+.goal li { margin: 0.2rem 0; }
+
+.figure-half { max-width: 50%; }
+/* Скриншот Конфигуратора: рамка по размеру картинки, не шире половины колонки */
+.figure-shot { width: fit-content; max-width: 50%; }
+.figure-shot img { max-width: 100%; }
+/* Широкий скриншот (таблицы с метками времени): во всю колонку, ширину задаёт img */
+.figure-shot.figure-wide { max-width: 100%; }
+@media (max-width: 800px) {
+  .figure-half, .figure-shot { max-width: 100%; }
+}
 
 .outcome {
   margin: 1rem 0 1.4rem;
