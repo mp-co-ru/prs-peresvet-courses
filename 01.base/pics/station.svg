@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360">
+  <rect width="880" height="360" fill="#f4f7f6"/>
+  <rect x="70" y="70" width="150" height="210" rx="16" fill="#d7f3ef" stroke="#0f6e73" stroke-width="3"/>
+  <rect x="86" y="170" width="118" height="94" rx="8" fill="#7ec8c4"/>
+  <text x="145" y="120" text-anchor="middle" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="18" font-weight="700">Бак</text>
+  <text x="145" y="224" text-anchor="middle" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="15">Уровень</text>
+  <text x="145" y="246" text-anchor="middle" fill="#0f6e73" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="14">%</text>
+  <line x1="220" y1="230" x2="330" y2="230" stroke="#0f6e73" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="330,222 348,230 330,238" fill="#0f6e73"/>
+  <circle cx="430" cy="230" r="58" fill="#ffffff" stroke="#c4552a" stroke-width="4"/>
+  <circle cx="430" cy="230" r="16" fill="#c4552a"/>
+  <text x="430" y="318" text-anchor="middle" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="18" font-weight="700">Насос</text>
+  <rect x="560" y="120" width="250" height="70" rx="16" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+  <text x="584" y="150" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="14">Давление</text>
+  <text x="584" y="174" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="20" font-weight="700">бар</text>
+  <rect x="560" y="206" width="250" height="70" rx="16" fill="#ffffff" stroke="#c4552a" stroke-width="2"/>
+  <text x="584" y="236" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="14">Ток двигателя</text>
+  <text x="584" y="260" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="20" font-weight="700">А</text>
+  <line x1="488" y1="200" x2="560" y2="155" stroke="#0f6e73" stroke-width="2"/>
+  <line x1="488" y1="250" x2="560" y2="241" stroke="#c4552a" stroke-width="2"/>
+</svg>

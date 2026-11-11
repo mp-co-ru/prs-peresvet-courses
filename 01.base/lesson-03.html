@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 3. Объекты и иерархия — курс МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="index.html"><img class="nav-logo" src="pics/logo.svg" alt=""> Курс по платформе МПК-Пересвет</a>
+      <span>Урок 3 из 13</span>
+    </div>
+  </header>
+  <main class="wrap lesson">
+    <h1>Объекты и иерархия</h1>
+    <div class="outcome">
+      <div class="k">Результат урока</div>
+      <p>К концу урока параметры станции разложены по объектам: цех, станция, насос. Теги из прошлого урока переехали в насос вместе со своими значениями.</p>
+    </div>
+    <p>Список тегов удобен, пока параметров мало. Когда у станции появятся бак, второй насос, помещение с камерой, плоский список превратится в длинную ленту имён. Объекты группируют параметры так, как устроен сам объект: у каждого агрегата — свои теги.</p>
+
+    <section class="step">
+      <span class="num">1</span>
+      <h2>Что собираем</h2>
+      <figure class="figure">
+        <img src="pics/tree.svg" alt="Папка Цех, объекты НС-1 и Насос, теги Давление, Ток и Уровень">
+        <figcaption>Имена можно скопировать как есть. Следующие уроки совпадут с этим деревом.</figcaption>
+      </figure>
+    </section>
+
+    <section class="step">
+      <span class="num">2</span>
+      <h2>Папка</h2>
+      <p>В корне «Объекты» в меню узла выберите <strong>Новая папка</strong>. Справа задайте имя <code>Цех</code> и нажмите <strong>Записать</strong>.</p>
+      <p>Папка группирует объекты. Сама она ничего не измеряет и не хранит.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">3</span>
+      <h2>Объекты</h2>
+      <p>Оставьте текущей папку «Цех». Выберите <strong>Новый объект</strong>. Имя — <code>НС-1</code>, описание — «Насосная станция». Нажмите <strong>Записать</strong>.</p>
+      <p>У объекта «НС-1» снова выберите <strong>Новый объект</strong>. Имя — <code>Насос</code>. Нажмите <strong>Записать</strong>.</p>
+      <p>«НС-1» — станция целиком. «Насос» — агрегат внутри неё. Глубина вложенности не ограничена: позже у станции появятся бак и помещение с камерой.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">4</span>
+      <h2>Перенос тегов</h2>
+      <p>Раскройте корень «Теги». Выделите «Давление», затем с нажатым <code>Ctrl</code> добавьте «Ток» и «Уровень». Перетащите выделенные теги мышью на объект «Насос».</p>
+      <p>Тег при переносе остаётся тем же тегом: меняется только его место в дереве. Привязка к хранилищу и записанные значения сохраняются.</p>
+    </section>
+
+    <section class="check">
+      <h2>Проверка</h2>
+      <ul>
+        <li>Дерево совпадает с рисунком: папка, два объекта, три тега у насоса.</li>
+        <li>Корень «Теги» пуст.</li>
+        <li>Чтение давления у тега в «Насосе» по-прежнему возвращает 4,2.</li>
+      </ul>
+    </section>
+
+    <aside class="deeper">
+      <h2>В расширенном курсе</h2>
+      <ul>
+        <li>папки во всех ветках дерева;</li>
+        <li>копирование, приостановка и удаление узлов;</li>
+        <li>групповой перенос и выгрузка дерева в CSV;</li>
+        <li>создание модели через API.</li>
+      </ul>
+      <p>Расширенный курс готовится. Пока эти темы описаны в справочнике: <a href="https://mp-co-ru.github.io/peresvet/objects.html">«Объекты»</a>, <a href="https://mp-co-ru.github.io/peresvet/folders.html">«Папки»</a>, <a href="https://mp-co-ru.github.io/peresvet/configurator/configurator.html">«Конфигуратор модели»</a>.</p>
+    </aside>
+
+    <p>Дальше значения тегов читают за интервал и сравнивают историю с последним значением.</p>
+    <p><a href="lesson-02.html">← Урок 2</a></p>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+  <script src="course.js"></script>
+</body>
+</html>

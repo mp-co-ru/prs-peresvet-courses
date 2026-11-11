@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420">
+  <rect width="760" height="420" fill="#f4f7f6"/>
+  <g font-family="Segoe UI, DejaVu Sans, sans-serif">
+    <rect x="250" y="24" width="260" height="46" rx="14" fill="#08343a"/>
+    <text x="380" y="54" text-anchor="middle" fill="#ffffff" font-size="18">Объекты</text>
+    <line x1="380" y1="70" x2="380" y2="96" stroke="#0f6e73" stroke-width="2"/>
+    <rect x="250" y="96" width="260" height="46" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="380" y="126" text-anchor="middle" fill="#08343a" font-size="18">Цех</text>
+    <line x1="380" y1="142" x2="380" y2="168" stroke="#0f6e73" stroke-width="2"/>
+    <rect x="250" y="168" width="260" height="46" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="380" y="198" text-anchor="middle" fill="#08343a" font-size="18">НС-1</text>
+    <line x1="380" y1="214" x2="380" y2="240" stroke="#0f6e73" stroke-width="2"/>
+    <rect x="250" y="240" width="260" height="46" rx="14" fill="#fff6f1" stroke="#c4552a" stroke-width="2"/>
+    <text x="380" y="270" text-anchor="middle" fill="#08343a" font-size="18">Насос</text>
+    <line x1="380" y1="286" x2="380" y2="312" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="130" y1="312" x2="630" y2="312" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="130" y1="312" x2="130" y2="332" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="380" y1="312" x2="380" y2="332" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="630" y1="312" x2="630" y2="332" stroke="#0f6e73" stroke-width="2"/>
+    <rect x="40" y="332" width="180" height="64" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="130" y="360" text-anchor="middle" fill="#08343a" font-size="16">Давление</text>
+    <text x="130" y="380" text-anchor="middle" fill="#5c6e74" font-size="13">бар</text>
+    <rect x="290" y="332" width="180" height="64" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="380" y="360" text-anchor="middle" fill="#08343a" font-size="16">Ток</text>
+    <text x="380" y="380" text-anchor="middle" fill="#5c6e74" font-size="13">А</text>
+    <rect x="540" y="332" width="180" height="64" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="630" y="360" text-anchor="middle" fill="#08343a" font-size="16">Уровень</text>
+    <text x="630" y="380" text-anchor="middle" fill="#5c6e74" font-size="13">%</text>
+  </g>
+</svg>

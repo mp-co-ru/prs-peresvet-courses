@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360">
+  <rect width="760" height="360" fill="#f4f7f6"/>
+  <g font-family="Segoe UI, DejaVu Sans, sans-serif">
+    <rect x="60" y="32" width="220" height="50" rx="14" fill="#08343a"/>
+    <text x="170" y="64" text-anchor="middle" fill="#ffffff" font-size="19">Теги</text>
+    <path d="M110 82V300" stroke="#0f6e73" stroke-width="2" fill="none"/>
+    <path d="M110 136H200M110 218H200M110 300H200" stroke="#0f6e73" stroke-width="2" fill="none"/>
+    <rect x="200" y="108" width="300" height="56" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="226" y="142" fill="#08343a" font-size="18">Давление</text>
+    <text x="476" y="142" text-anchor="end" fill="#5c6e74" font-size="15">бар</text>
+    <rect x="200" y="190" width="300" height="56" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="226" y="224" fill="#08343a" font-size="18">Ток</text>
+    <text x="476" y="224" text-anchor="end" fill="#5c6e74" font-size="15">А</text>
+    <rect x="200" y="272" width="300" height="56" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="226" y="306" fill="#08343a" font-size="18">Уровень</text>
+    <text x="476" y="306" text-anchor="end" fill="#5c6e74" font-size="15">%</text>
+    <rect x="540" y="190" width="180" height="56" rx="14" fill="#fff6f1" stroke="#c4552a" stroke-width="2"/>
+    <text x="630" y="216" text-anchor="middle" fill="#c4552a" font-size="15">хранилище</text>
+    <text x="630" y="236" text-anchor="middle" fill="#08343a" font-size="15">psql</text>
+    <path d="M500 136C520 136 520 210 540 210M500 218H540M500 300C520 300 520 226 540 226" stroke="#c4552a" stroke-width="2" fill="none" stroke-dasharray="5 5"/>
+  </g>
+</svg>

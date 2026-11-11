@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 2. Первая модель: список тегов — курс МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="index.html"><img class="nav-logo" src="pics/logo.svg" alt=""> Курс по платформе МПК-Пересвет</a>
+      <span>Урок 2 из 13</span>
+    </div>
+  </header>
+  <main class="wrap lesson">
+    <h1>Первая модель: список тегов</h1>
+    <div class="outcome">
+      <div class="k">Результат урока</div>
+      <p>К концу урока в модели есть три параметра насосной станции. В тег «Давление» записано значение, и его можно прочитать обратно.</p>
+    </div>
+    <p>Самая простая модель — линейный список тегов, без объектов и иерархии. Для этого в дереве есть корень «Теги». Такой модели хватает, когда параметров немного и группировать их не нужно: несколько датчиков, счётчик, метеостанция. Объекты появятся в следующем уроке.</p>
+    <p>Прибора пока нет, поэтому значения записываются в теги вручную.</p>
+
+    <section class="step">
+      <span class="num">1</span>
+      <h2>Что собираем</h2>
+      <figure class="figure">
+        <img src="pics/tags.svg" alt="Корень Теги, в нём теги Давление, Ток и Уровень, привязанные к хранилищу psql">
+        <figcaption>Три тега в корне «Теги». Значения сохраняются в хранилище <code>psql</code>, созданном при установке.</figcaption>
+      </figure>
+    </section>
+
+    <section class="step">
+      <span class="num">2</span>
+      <h2>Теги</h2>
+      <p>В дереве выберите корень «Теги» и в меню узла — <strong>Новый тег</strong>. Тип значения — <strong>вещественный</strong>. Создайте три тега:</p>
+      <table>
+        <thead>
+          <tr><th>Имя</th><th>Единицы</th><th>Что это на станции</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Давление</td><td>бар</td><td>Давление на напоре насоса</td></tr>
+          <tr><td>Ток</td><td>А</td><td>Ток двигателя</td></tr>
+          <tr><td>Уровень</td><td>%</td><td>Заполнение бака</td></tr>
+        </tbody>
+      </table>
+      <p>После каждого тега нажмите <strong>Записать</strong>. Пока запись не сделана, имя в дереве не совпадает с тем, что видно в свойствах.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">3</span>
+      <h2>Значение тега</h2>
+      <p>Тег хранит не одно «текущее число», а последовательность значений. Каждое значение состоит из трёх частей: метка времени, величина и код качества. Код <code>0</code> или пустое качество значит, что величине можно доверять.</p>
+      <figure class="figure">
+        <img src="pics/point.svg" alt="Значение давления 4,2 бар с качеством 0">
+        <figcaption>Метку времени можно не заполнять: платформа возьмёт текущий момент.</figcaption>
+      </figure>
+    </section>
+
+    <section class="step">
+      <span class="num">4</span>
+      <h2>Хранилище</h2>
+      <p>Выберите тег «Давление». Справа откройте вкладку <strong>Хранилище</strong> и привяжите тег к хранилищу <code>psql</code> из папки «Хранилища данных». После этого появляется блок <strong>Данные тега</strong>. Так же привяжите «Ток» и «Уровень».</p>
+    </section>
+
+    <section class="step">
+      <span class="num">5</span>
+      <h2>Запись и чтение</h2>
+      <p>У тега «Давление» на вкладке <strong>Запрос на запись</strong> в поле значения впишите <code>4.2</code>. Метку времени оставьте пустой. Нажмите <strong>Записать данные</strong>.</p>
+      <p>Откройте вкладку <strong>Запрос на чтение</strong> и нажмите <strong>Получить данные</strong>. В таблице «Время / Значение / Качество» должна появиться строка со значением <code>4.2</code> и качеством <code>0</code>.</p>
+      <p>Повторите запись для «Тока» (<code>12.5</code>) и «Уровня» (<code>60</code>). Теги независимы: запись давления не меняет уровень.</p>
+    </section>
+
+    <section class="check">
+      <h2>Проверка</h2>
+      <ul>
+        <li>В корне «Теги» три тега, у каждого тип «вещественный» и свои единицы.</li>
+        <li>Все три тега привязаны к хранилищу <code>psql</code>.</li>
+        <li>Чтение давления возвращает записанные 4,2.</li>
+      </ul>
+    </section>
+
+    <aside class="deeper">
+      <h2>В расширенном курсе</h2>
+      <ul>
+        <li>все типы значений тегов: целый, строковый, json и другие;</li>
+        <li>коды качества и что делать с недостоверными значениями;</li>
+        <li>несколько хранилищ и выбор хранилища для тега;</li>
+        <li>запись и чтение значений через API — из своих программ.</li>
+      </ul>
+      <p>Расширенный курс готовится. Пока эти темы описаны в справочнике: <a href="https://mp-co-ru.github.io/peresvet/tags.html">«Теги»</a>, <a href="https://mp-co-ru.github.io/peresvet/dataStorages.html">«Хранилища данных»</a>, <a href="https://mp-co-ru.github.io/peresvet/data_api.html">«Данные»</a>.</p>
+    </aside>
+
+    <p><a href="lesson-01.html">← Урок 1</a> · <a href="lesson-03.html">Урок 3. Объекты и иерархия →</a></p>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+  <script src="course.js"></script>
+</body>
+</html>

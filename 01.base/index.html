@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Курс по платформе МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="icon-tree" viewBox="0 0 120 90"><rect x="44" y="6" width="32" height="16" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><path d="M60 22v10M30 32h60M30 32v8M90 32v8" stroke="#0f6e73"/><rect x="14" y="40" width="32" height="16" rx="5" fill="#ffffff" stroke="#0f6e73"/><rect x="74" y="40" width="32" height="16" rx="5" fill="#ffffff" stroke="#0f6e73"/><path d="M30 56v10M22 66h16M22 66v6M38 66v6M90 56v10M82 66h16M82 66v6M98 66v6" stroke="#0f6e73"/><circle cx="22" cy="78" r="4" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="38" cy="78" r="4" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="82" cy="78" r="4" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="98" cy="78" r="4" fill="#fff6f1" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-events" viewBox="0 0 120 90"><rect x="6" y="8" width="30" height="18" rx="5" fill="#ffffff" stroke="#0f6e73"/><circle cx="21" cy="17" r="4" fill="#d7f3ef" stroke="#0f6e73"/><g><path d="M21 38l11 19h-22Z" fill="#fff6f1" stroke="#c4552a"/><path d="M21 44v6" stroke="#c4552a"/></g><circle cx="21" cy="74" r="10" fill="#fff" stroke="#0f6e73"/><path d="M21 68v6l4 3" stroke="#0f6e73"/><path d="M38 17c18 0 18 28 34 28M34 47h38M33 74c20 0 20-29 39-29" stroke="#0f6e73"/><rect x="74" y="30" width="40" height="30" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><text x="94" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#08343a" stroke="none">f(x)</text></symbol>
+    <symbol id="icon-model" viewBox="0 0 120 90"><rect x="6" y="6" width="30" height="20" rx="5" fill="#ffffff" stroke="#0f6e73"/><path d="M12 12h18M12 18h10" stroke="#0f6e73"/><rect x="6" y="34" width="30" height="20" rx="5" fill="#ffffff" stroke="#0f6e73"/><circle cx="21" cy="44" r="5" fill="#d7f3ef" stroke="#0f6e73"/><path d="M8 64v18c0 5 26 5 26 0v-18" fill="#ffffff" stroke="#0f6e73"/><ellipse cx="21.0" cy="64" rx="13.0" ry="4" fill="#d7f3ef" stroke="#0f6e73"/><path d="M38 16c16 0 16 28 32 28M38 44h32M36 72c18 0 18-28 34-28" stroke="#0f6e73"/><circle cx="92" cy="44" r="22" fill="#d7f3ef" stroke="#0f6e73"/><path d="M84 36v16M84 44h16M100 36v16" stroke="#0f6e73"/><circle cx="84" cy="36" r="3" fill="#ffffff" stroke="#0f6e73"/><circle cx="84" cy="52" r="3" fill="#ffffff" stroke="#0f6e73"/><circle cx="100" cy="36" r="3" fill="#ffffff" stroke="#0f6e73"/><circle cx="100" cy="52" r="3" fill="#ffffff" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-method" viewBox="0 0 120 90"><rect x="4" y="32" width="30" height="22" rx="5" fill="#ffffff" stroke="#0f6e73"/><circle cx="19" cy="43" r="4" fill="#d7f3ef" stroke="#0f6e73"/><path d="M36 43H44" stroke="#0f6e73"/><path d="M42 39l6 4-6 4" fill="#0f6e73" stroke="none"/><rect x="48" y="24" width="36" height="38" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><text x="66" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#08343a" stroke="none">f(x)</text><path d="M86 43H94" stroke="#0f6e73"/><path d="M92 39l6 4-6 4" fill="#0f6e73" stroke="none"/><rect x="98" y="33" width="20" height="20" rx="10" fill="#fff6f1" stroke="#c4552a"/><path d="M66 22V10M52 10h28" stroke="#c4552a"/><path d="M54 70v12c0 5 24 5 24 0v-12" fill="#ffffff" stroke="#0f6e73"/><ellipse cx="66.0" cy="70" rx="12.0" ry="4" fill="#d7f3ef" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-api" viewBox="0 0 120 90"><rect x="4" y="26" width="44" height="36" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><path d="M12 36h28M12 44h20M12 52h24" stroke="#0f6e73"/><path d="M50 22H70" stroke="#0f6e73"/><path d="M68 18l6 4-6 4" fill="#0f6e73" stroke="none"/><path d="M50 44H70" stroke="#0f6e73"/><path d="M68 40l6 4-6 4" fill="#0f6e73" stroke="none"/><path d="M50 66H70" stroke="#0f6e73"/><path d="M68 62l6 4-6 4" fill="#0f6e73" stroke="none"/><rect x="76" y="10" width="40" height="22" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="96" y="25" text-anchor="middle" font-size="10" font-weight="700" fill="#08343a" stroke="none">ERP</text><rect x="76" y="34" width="40" height="20" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="96" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="#08343a" stroke="none">MES</text><rect x="76" y="56" width="40" height="22" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="96" y="71" text-anchor="middle" font-size="10" font-weight="700" fill="#08343a" stroke="none">BI</text></symbol>
+    <symbol id="icon-screen" viewBox="0 0 120 90"><rect x="8" y="6" width="104" height="64" rx="5" fill="#ffffff" stroke="#0f6e73"/><path d="M44 80h32M60 70v10" stroke="#0f6e73"/><path d="M16 52l14-14 12 8 14-20 12 10" stroke="#c4552a"/><rect x="76" y="16" width="30" height="22" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><path d="M80 34h6v-8h-6zM89 34h6v-12h-6zM98 34h6v-5h-6z" fill="#0f6e73" stroke="none"/><rect x="76" y="44" width="30" height="18" rx="5" fill="#fff6f1" stroke="#c4552a"/><circle cx="91" cy="53" r="4" fill="#c4552a" stroke="none"/></symbol>
+    <symbol id="icon-package" viewBox="0 0 120 90"><path d="M20 30 60 12l40 18-40 18-40-18Z" fill="#d7f3ef" stroke="#0f6e73"/><path d="M20 30v34l40 18 40-18V30M60 48v34" fill="none" stroke="#0f6e73"/><rect x="28" y="44" width="22" height="12" rx="5" fill="#ffffff" stroke="#0f6e73"/><rect x="28" y="60" width="22" height="12" rx="5" fill="#ffffff" stroke="#0f6e73"/><rect x="70" y="52" width="22" height="12" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="39" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#08343a" stroke="none">f</text><text x="39" y="70" text-anchor="middle" font-size="9" font-weight="700" fill="#08343a" stroke="none">f</text><text x="81" y="62" text-anchor="middle" font-size="9" font-weight="700" fill="#08343a" stroke="none">f</text></symbol>
+    <symbol id="icon-build" viewBox="0 0 120 90"><rect x="42" y="6" width="36" height="16" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><path d="M60 22v12M30 34h60M30 34v8M90 34v8" stroke="#0f6e73"/><rect x="12" y="42" width="36" height="16" rx="5" fill="#ffffff" stroke="#0f6e73"/><rect x="72" y="42" width="36" height="16" rx="5" fill="#ffffff" stroke="#0f6e73"/><path d="M90 58v10" stroke="#0f6e73"/><rect x="70" y="68" width="40" height="16" rx="8" fill="#fff6f1" stroke="#c4552a"/><text x="90" y="80" text-anchor="middle" font-size="10" font-weight="700" fill="#c4552a" stroke="none">1.0</text></symbol>
+    <symbol id="icon-history" viewBox="0 0 120 90"><rect x="40" y="10" width="38" height="62" fill="#d7f3ef" stroke="none"/><path d="M8 72h106M8 72V8" stroke="#0f6e73"/><path d="M40 10v62M78 10v62" stroke="#c4552a"/><path d="M10 56l12-10 12 6 12-20 12 8 12-14 12 16 12-8 12 4" stroke="#0f6e73"/><circle cx="46" cy="32" r="3" fill="#ffffff" stroke="#0f6e73"/><circle cx="58" cy="40" r="3" fill="#ffffff" stroke="#0f6e73"/><circle cx="70" cy="26" r="3" fill="#ffffff" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-alert" viewBox="0 0 120 90"><path d="M8 72h70M8 72V10" stroke="#0f6e73"/><path d="M8 30h70" stroke="#c4552a"/><path d="M10 62l12-8 12 4 12-20 12-10 12 6" stroke="#0f6e73"/><path d="M78 46H86" stroke="#0f6e73"/><path d="M84 42l6 4-6 4" fill="#0f6e73" stroke="none"/><rect x="90" y="32" width="26" height="28" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><text x="103" y="50" text-anchor="middle" font-size="12" font-weight="700" fill="#08343a" stroke="none">f</text><g><path d="M103 68l11 19h-22Z" fill="#fff6f1" stroke="#c4552a"/><path d="M103 74v6" stroke="#c4552a"/></g><path d="M103 60v8" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-modbus" viewBox="0 0 120 90"><rect x="6" y="18" width="40" height="52" rx="5" fill="#ffffff" stroke="#0f6e73"/><circle cx="16" cy="28" r="3" fill="#c4552a" stroke="#0f6e73"/><circle cx="26" cy="28" r="3" fill="#d7f3ef" stroke="#0f6e73"/><path d="M14 40h24M14 48h24M14 56h24" stroke="#0f6e73"/><path d="M46 44h12c6 0 6-10 12-10s6 20 12 20 6-10 12-10h6" stroke="#c4552a"/><rect x="98" y="32" width="18" height="24" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="107" cy="44" r="4" fill="#ffffff" stroke="#0f6e73"/><text x="26" y="84" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">Modbus</text></symbol>
+    <symbol id="icon-license" viewBox="0 0 120 90"><path d="M10 34 42 20l32 14-32 14-32-14Z" fill="#d7f3ef" stroke="#0f6e73"/><path d="M10 34v28l32 14 32-14V34M42 48v28" fill="none" stroke="#0f6e73"/><path d="M86 40v-10a12 12 0 0 1 24 0v10" fill="none" stroke="#c4552a"/><rect x="80" y="40" width="36" height="30" rx="6" fill="#fff6f1" stroke="#c4552a"/><circle cx="98" cy="52" r="4" fill="#c4552a" stroke="none"/><path d="M98 56v6" stroke="#c4552a"/></symbol>
+    <symbol id="icon-calendar" viewBox="0 0 120 90"><circle cx="22" cy="24" r="16" fill="#ffffff" stroke="#0f6e73"/><path d="M22 14v10l7 5" stroke="#0f6e73"/><path d="M40 24H56" stroke="#0f6e73"/><path d="M54 20l6 4-6 4" fill="#0f6e73" stroke="none"/><rect x="60" y="12" width="30" height="24" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><text x="75" y="29" text-anchor="middle" font-size="12" font-weight="700" fill="#08343a" stroke="none">f</text><rect x="8" y="52" width="34" height="26" rx="5" fill="#ffffff" stroke="#0f6e73"/><circle cx="25" cy="65" r="6" fill="#d7f3ef" stroke="#0f6e73"/><path d="M42 60l8-5v20l-8-5" fill="#ffffff" stroke="#0f6e73"/><path d="M58 54v22c0 5 26 5 26 0v-22" fill="#ffffff" stroke="#0f6e73"/><ellipse cx="71.0" cy="54" rx="13.0" ry="4" fill="#d7f3ef" stroke="#0f6e73"/><rect x="92" y="48" width="24" height="32" rx="5" fill="#fff6f1" stroke="#c4552a"/><path d="M97 72l4-6 4 3 6-9" stroke="#c4552a"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 120 90"><rect x="6" y="10" width="74" height="56" rx="5" fill="#ffffff" stroke="#0f6e73"/><path d="M6 22h74" stroke="#0f6e73"/><circle cx="14" cy="16" r="2" fill="#c4552a" stroke="#0f6e73"/><circle cx="22" cy="16" r="2" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="30" cy="16" r="2" fill="#d7f3ef" stroke="#0f6e73"/><path d="M28 44l9 9 18-18" stroke="#c4552a" stroke-width="3"/><path d="M88 34v30c0 5 26 5 26 0v-30" fill="#ffffff" stroke="#0f6e73"/><ellipse cx="101.0" cy="34" rx="13.0" ry="4" fill="#d7f3ef" stroke="#0f6e73"/><text x="101" y="84" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">PG</text></symbol>
+    <symbol id="icon-book" viewBox="0 0 120 90"><path d="M10 16h40a10 10 0 0 1 10 10v54a10 10 0 0 0-10-10H10Z" fill="#ffffff" stroke="#0f6e73"/><path d="M110 16H70a10 10 0 0 0-10 10v54a10 10 0 0 1 10-10h40Z" fill="#d7f3ef" stroke="#0f6e73"/><text x="32" y="38" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">Python</text><text x="32" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">SQL</text><text x="88" y="38" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">Modbus</text><text x="88" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">Grafana</text></symbol>
+    <symbol id="icon-pump" viewBox="0 0 120 90"><rect x="6" y="14" width="30" height="56" rx="6" fill="#ffffff" stroke="#0f6e73"/><rect x="9" y="40" width="24" height="27" rx="3" fill="#d7f3ef" stroke="none"/><path d="M36 60h16" stroke="#0f6e73"/><circle cx="66" cy="60" r="14" fill="#fff6f1" stroke="#c4552a"/><circle cx="66" cy="60" r="4" fill="#c4552a" stroke="none"/><path d="M80 60h34M100 60V40" stroke="#0f6e73"/><circle cx="100" cy="30" r="10" fill="#ffffff" stroke="#0f6e73"/><path d="M100 30l5-5" stroke="#c4552a"/><circle cx="66" cy="30" r="6" fill="#d7f3ef" stroke="#0f6e73"/><path d="M66 36v10" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-industry" viewBox="0 0 120 90"><path d="M8 80V44l22-12v12l22-12v12l22-12v48Z" fill="#ffffff" stroke="#0f6e73"/><path d="M80 80V14h12v66" fill="#d7f3ef" stroke="#0f6e73"/><path d="M8 80h104" stroke="#0f6e73"/><rect x="16" y="56" width="12" height="10" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><rect x="38" y="56" width="12" height="10" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><rect x="60" y="56" width="12" height="10" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="104" cy="30" r="8" fill="#fff6f1" stroke="#c4552a"/><path d="M101 30h6M104 27v6" stroke="#c4552a"/></symbol>
+    <symbol id="icon-maint" viewBox="0 0 120 90"><circle cx="34" cy="44" r="18" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="34" cy="44" r="7" fill="#ffffff" stroke="#0f6e73"/><path d="M34 20v6M34 62v6M10 44h6M52 44h6M17 27l4 4M47 57l4 4M17 61l4-4M47 31l4-4" stroke="#0f6e73"/><path d="M66 70h48M66 70V20" stroke="#0f6e73"/><path d="M68 60l10-4 10 2 10-12 12-16" stroke="#c4552a"/><circle cx="110" cy="30" r="3" fill="#fff6f1" stroke="#c4552a"/></symbol>
+    <symbol id="icon-energy" viewBox="0 0 120 90"><rect x="10" y="10" width="50" height="64" rx="5" fill="#ffffff" stroke="#0f6e73"/><rect x="18" y="18" width="34" height="16" rx="5" fill="#d7f3ef" stroke="#0f6e73"/><text x="35" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#0f6e73" stroke="none">kWh</text><circle cx="24" cy="50" r="5" fill="#d7f3ef" stroke="#0f6e73"/><circle cx="46" cy="50" r="5" fill="#d7f3ef" stroke="#0f6e73"/><path d="M18 64h34" stroke="#0f6e73"/><path d="M86 10 72 44h14l-6 32 24-40H88l8-26Z" fill="#fff6f1" stroke="#c4552a"/></symbol>
+    <symbol id="icon-hub" viewBox="0 0 120 90"><circle cx="60" cy="45" r="16" fill="#d7f3ef" stroke="#0f6e73"/><text x="60" y="49" text-anchor="middle" font-size="11" font-weight="700" fill="#0f6e73" stroke="none">M</text><rect x="4" y="8" width="32" height="18" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="20" y="21" text-anchor="middle" font-size="7" font-weight="700" fill="#0f6e73" stroke="none">SCADA</text><rect x="84" y="8" width="32" height="18" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="100" y="21" text-anchor="middle" font-size="8" font-weight="700" fill="#0f6e73" stroke="none">MES</text><rect x="4" y="64" width="32" height="18" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="20" y="77" text-anchor="middle" font-size="8" font-weight="700" fill="#0f6e73" stroke="none">ERP</text><rect x="84" y="64" width="32" height="18" rx="5" fill="#ffffff" stroke="#0f6e73"/><text x="100" y="77" text-anchor="middle" font-size="8" font-weight="700" fill="#0f6e73" stroke="none">LIMS</text><path d="M36 20l12 14M84 20 72 34M36 70l12-14M84 70 72 56" stroke="#0f6e73"/></symbol>
+    <symbol id="icon-lab" viewBox="0 0 120 90"><path d="M18 10h20M22 10v24L8 72a6 6 0 0 0 6 8h28a6 6 0 0 0 6-8L34 34V10" fill="#ffffff" stroke="#0f6e73"/><path d="M14 62h28l4 10a4 4 0 0 1-4 6H14a4 4 0 0 1-4-6Z" fill="#d7f3ef" stroke="none"/><rect x="62" y="10" width="50" height="66" rx="5" fill="#ffffff" stroke="#0f6e73"/><path d="M70 22h34M70 32h26M70 42h34M70 52h20" stroke="#0f6e73"/><path d="M84 62l6 6 12-12" stroke="#c4552a" stroke-width="3"/></symbol>
+    <symbol id="icon-iot" viewBox="0 0 120 90"><path d="M8 80V46l24-18 24 18v34Z" fill="#d7f3ef" stroke="#0f6e73"/><path d="M20 80V62c0-6 6-10 12-10s12 4 12 10v18" stroke="#0f6e73"/><path d="M32 52v-8M26 58c0-4 3-6 6-6M38 58c0-4-3-6-6-6" stroke="#0f6e73"/><path d="M86 80V40M78 40h16" stroke="#0f6e73"/><path d="M86 40l12-6-12-6" fill="#fff6f1" stroke="#c4552a"/><circle cx="104" cy="66" r="8" fill="#ffffff" stroke="#0f6e73"/><path d="M104 60v6l3 2" stroke="#0f6e73"/><path d="M62 22c6-6 14-6 20 0M66 28c4-4 8-4 12 0" stroke="#c4552a"/><circle cx="72" cy="34" r="2" fill="#c4552a" stroke="#c4552a"/></symbol>
+  </svg>
+  <header class="hero">
+    <div class="wrap">
+      <nav class="nav">
+        <span class="brand">Учебный курс</span>
+        <a href="https://mp-co-ru.github.io/peresvet/index.html">Справочник</a>
+      </nav>
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <div class="hero-title">
+            <img class="logo" src="pics/logo.svg" alt="Знак МПК-Пересвет">
+            <h1>Курс по платформе <span>МПК-Пересвет</span></h1>
+          </div>
+          <p class="lead">МПК-Пересвет — платформа для создания моделей технических объектов, от одного агрегата до целого предприятия. Это базовый курс: он быстро проводит от первого параметра до готового экрана на одном учебном примере. Детали каждой темы разбирает расширенный курс.</p>
+          <ul class="pills">
+            <li>базовый курс</li>
+            <li>13 коротких уроков</li>
+            <li>один сквозной пример</li>
+            <li>от дерева модели до экрана</li>
+          </ul>
+        </div>
+        <figure class="hero-anim">
+          <img src="pics/grow.svg" alt="Анимация: модель растёт от одного насоса к насосной линии и затем к модели цеха">
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro-section">
+      <div class="wrap">
+        <details class="intro">
+          <summary><h2>Введение</h2><span class="chev" aria-hidden="true"></span></summary>
+        <section class="intro-part">
+      <div class="wrap">
+        <h2>Модель объекта</h2>
+        <p>Главная задача платформы — создание модели объекта. Модель описывает объект целиком: из каких частей он состоит, какие параметры есть у каждой части, откуда берутся значения этих параметров и что должно происходить, когда они меняются.</p>
+        <p>Параметр — любая величина, которая характеризует объект: давление в трубопроводе, уровень в баке, ток двигателя, температура в помещении, состояние «включён / выключен». В платформе параметр называется <b>тегом</b>. Значения тега хранятся вместе со временем, поэтому по каждому параметру доступно не только текущее значение, но и вся история.</p>
+        <p>Объектом может быть отдельный насос, технологическая линия, цех или целое предприятие. Модель строится постепенно: сначала несколько параметров, затем вложенные узлы, расчёты, тревоги, подключение приборов, камер и внешних систем.</p>
+        <p>Модель — единая точка доступа к данным объекта. Коннекторы записывают в теги показания приборов, методы рассчитывают значения и реагируют на события, экраны Grafana и внешние информационные системы читают данные по тем же тегам. Где физически хранятся данные — в PostgreSQL, VictoriaMetrics, во внешней базе или их возвращает метод, — для потребителя значения не имеет: он обращается к тегу модели.</p>
+        <p>Модель в МПК-Пересвет состоит из двух частей.</p>
+        <div class="grid model-grid">
+          <article class="card"><svg class="card-icon"><use href="#icon-tree"></use></svg><div class="k">Стати&shy;ческая модель</div><p>Иерархия сущностей: объекты, теги, тревоги, методы, расписания. Глубина дерева не ограничена — от отдельного датчика до предприятия. Каждое значение тега хранится с меткой времени и кодом качества — признаком того, можно ли доверять значению.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-events"></use></svg><div class="k">Динами&shy;ческая модель</div><p>Набор методов, которые запускаются по событиям: изменилось значение тега, возникла тревога, сработало расписание. Метод рассчитывает значения тегов, определяет, наступила ли тревога, формирует отчёт или отправляет письмо.</p></article>
+        </div>
+        <p>Источники событий тоже входят в модель. Расписание генерирует события по таймеру: каждую минуту, каждый час, раз в сутки. Тревога сообщает, что с объектом что-то не так. В простом случае значение параметра выходит за допустимую границу — например, уровень в баке поднимается выше 90 %. В сложном тревогу определяет метод: выполняет расчёт по нескольким параметрам и решает, возникла тревога или нет.</p>
+      </div>
+        </section>
+
+        <section class="intro-part">
+      <div class="wrap">
+        <h2>Область применения</h2>
+        <p>Платформа подходит везде, где данные нужно собрать, сохранить, обработать и показать — от проектов автоматизации на промышленных предприятиях до отдельных прикладных приложений.</p>
+        <div class="grid area-grid">
+          <article class="card"><svg class="card-icon"><use href="#icon-industry"></use></svg><div class="k">Промыш&shy;ленная автомати&shy;зация</div><p>Диспетчеризация цехов и производственных площадок: сбор данных с контроллеров и приборов, мнемосхемы, тревоги, история технологических параметров.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-maint"></use></svg><div class="k">Мониторинг оборудо&shy;вания</div><p>Наработка, режимы и состояние агрегатов. Методы считают показатели эффективности, выявляют отклонения и готовят данные для планирования обслуживания.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-energy"></use></svg><div class="k">Учёт энерго&shy;ресурсов</div><p>Электроэнергия, тепло, вода и газ по счётчикам и узлам учёта. Балансы, удельные расходы, отчёты за смену, сутки и месяц.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-hub"></use></svg><div class="k">Интеграция информа&shy;ционных систем</div><p>Единая модель поверх АСУ ТП, MES, ERP и лабораторных баз. Платформа собирает их данные в одном месте и сама служит источником данных для других систем.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-lab"></use></svg><div class="k">Испыта&shy;тельные стенды и лабора&shy;тории</div><p>Запись измерений во время испытаний, расчёт результатов по методике, формирование протоколов и архив испытаний.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-iot"></use></svg><div class="k">Прикладные прило&shy;жения с данными</div><p>Умная теплица, сеть метеостанций, мониторинг экологии, учёт работы спецтехники — любые задачи, где поток данных от датчиков нужно хранить, обрабатывать и показывать.</p></article>
+        </div>
+      </div>
+        </section>
+
+        <section class="intro-part">
+      <div class="wrap">
+        <h2>Что даёт платформа</h2>
+        <div class="grid feature-grid">
+          <article class="card"><svg class="card-icon"><use href="#icon-model"></use></svg><div class="k">Одна модель вместо разроз&shy;ненных систем</div><p>Коннекторы читают приборы и контроллеры, камеры отдают видеопоток, интеграционные хранилища подключают внешние базы данных. Всё это становится тегами одной модели.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-method"></use></svg><div class="k">Теги, которые вычис&shy;ляет метод</div><p>Значение тега не обязательно хранится в базе. Его может вернуть метод в момент запроса — так в модель попадают расчёты и данные других систем без копирования.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-api"></use></svg><div class="k">Источник данных для других систем</div><p>Внешние системы читают теги через API платформы и в одном формате получают историю, расчётные значения и данные подключённых источников.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-screen"></use></svg><div class="k">Экраны</div><p>Экраны в Grafana строятся по тем же тегам: тренды, тревоги, видео, табличные данные из внешних баз.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-package"></use></svg><div class="k">Повторное исполь&shy;зование</div><p>Методы оформляются пакетами и переносятся между проектами. Пакет можно защитить лицензией.</p></article>
+        </div>
+      </div>
+        </section>
+
+        <section class="intro-part">
+      <div class="wrap">
+        <h2>Чему научитесь</h2>
+        <div class="learn learn-grid">
+          <article class="card"><svg class="card-icon"><use href="#icon-build"></use></svg><p>Установить платформу, создать первые теги и собрать из них иерархию объекта.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-history"></use></svg><p>Читать историю тега за интервал и ограничивать выборку.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-alert"></use></svg><p>Писать методы, которые рассчитывают значения тегов и определяют тревоги.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-modbus"></use></svg><p>Получать данные с прибора через коннектор Modbus. Запись в устройство в курс не входит.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-license"></use></svg><p>Собирать методы в пакет и защищать пакет лицензией.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-calendar"></use></svg><p>Запускать методы по расписанию, подключать камеру и внешнюю базу данных, собирать сводный экран.</p></article>
+        </div>
+      </div>
+        </section>
+
+        <section class="intro-part">
+      <div class="wrap">
+        <h2>С чего можно начинать</h2>
+        <div class="grid start-grid">
+          <article class="card"><svg class="card-icon"><use href="#icon-check"></use></svg><div class="k">Нужно</div><p>Виртуальная машина с Ubuntu Server и Docker (раздел «Подготовка»), уверенная работа в браузере и командной строке. Установку платформы разбирает первый урок.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-book"></use></svg><div class="k">Не обязательно</div><p>Знание Python, SQL, Modbus и Grafana. Всё необходимое объясняется в тех уроках, где оно появляется.</p></article>
+          <article class="card"><svg class="card-icon"><use href="#icon-pump"></use></svg><div class="k">Учебный пример</div><p>Насосная станция «НС-1»: бак, насос, датчики давления, тока и уровня. Каждый урок добавляет к ней что-то новое.</p></article>
+        </div>
+      </div>
+        </section>
+        </details>
+      </div>
+    </section>
+
+    <section id="prep" class="prep-section">
+      <div class="wrap">
+        <h2>Подготовка</h2>
+        <div class="card prep">
+          <p>Все уроки курса проводятся на виртуальной машине с <b>Ubuntu Server 26.04.1</b>, на которой установлены Docker Engine и плагин Docker Compose. Платформа работает в контейнерах, поэтому подготовьте машину до первого урока.</p>
+          <p>На виртуальной машине должны быть:</p>
+          <ul>
+            <li>Ubuntu Server 26.04.1;</li>
+            <li><a href="https://docs.docker.com/engine/install/">Docker Engine</a> с плагином <code>docker compose</code>;</li>
+            <li>право запускать Docker без <code>sudo</code> — см. <a href="https://docs.docker.com/engine/install/linux-postinstall/">настройку после установки Docker</a>;</li>
+            <li>доступ в интернет: при первом запуске скачиваются образы контейнеров;</li>
+            <li>сетевой адрес (IPv4), по которому виртуальная машина доступна из браузера на вашем компьютере.</li>
+          </ul>
+          <p>Для установки платформы от вас потребуется умение работать в командной строке Linux и базовые знания по администрированию Linux: установка пакетов, работа с файлами и правами доступа, настройка сети, запуск и остановка сервисов.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="program">
+      <div class="wrap">
+        <h2>Программа</h2>
+        <p>Каждый урок даёт минимум, чтобы пройти шаг и двигаться дальше. В конце урока — список тем, которые подробно разбирает расширенный курс.</p>
+        <ol class="path">
+          <li><details><summary><span class="n">01</span><span class="t">Установка платформы</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Установка из готового дистрибутива одной командой.</li><li>Вход в Конфигуратор.</li></ul><a class="open" href="lesson-01.html">Открыть урок →</a></div></details></li>
+          <li><details><summary><span class="n">02</span><span class="t">Первая модель: список тегов</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Простейшая модель — теги в корне «Теги», без объектов.</li><li>Параметры давления, тока и уровня.</li><li>Привязка к хранилищу, запись значения и чтение его обратно.</li></ul><a class="open" href="lesson-02.html">Открыть урок →</a></div></details></li>
+          <li><details><summary><span class="n">03</span><span class="t">Объекты и иерархия</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Папка «Цех», объекты «НС-1» и «Насос».</li><li>Перенос тегов в объект.</li><li>Зачем модели иерархия.</li></ul><a class="open" href="lesson-03.html">Открыть урок →</a></div></details></li>
+          <li class="later"><details><summary><span class="n">04</span><span class="t">История в PostgreSQL</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Чтение истории за интервал, ограничение выборки.</li><li>Чем последнее значение отличается от истории.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">05</span><span class="t">Расчётный тег «Мощность»</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Первый метод: мощность двигателя по току.</li><li>Запуск метода при изменении значения тега.</li><li>Результат расчёта записывается в отдельный тег.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">06</span><span class="t">Тревога по уровню</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Тревога по границе: уровень в баке выше 90 %.</li><li>Тревога по результату расчёта метода.</li><li>Активные тревоги и их квитирование.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">07</span><span class="t">Эмулятор Modbus, только чтение</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Запуск эмулятора насосной станции.</li><li>Коннектор Modbus и привязка регистров к тегам.</li><li>Значения приходят сами, без ручной записи.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">08</span><span class="t">Пакет методов ns1.pump</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Методы из уроков 5 и 6 собираются в пакет.</li><li>Описание пакета и параметров методов.</li><li>Перенос пакета в другой проект.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">09</span><span class="t">Лицензия на пакет</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Зачем защищать методы.</li><li>Привязка пакета к лицензии.</li><li>Как ведёт себя пакет без лицензии.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">10</span><span class="t">Методы по расписанию</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Расписание генерирует события по таймеру.</li><li>Метод, который раз в час считает итоги.</li><li>Отчёт за период.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">11</span><span class="t">Камера помещения</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Объект «Помещение» и подключение IP-камеры.</li><li>Видео и кадр камеры в модели.</li><li>Видеоархив.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">12</span><span class="t">Внешняя база: паспорт и наряды</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Интеграционное хранилище PostgreSQL.</li><li>Операции чтения и операция по умолчанию.</li><li>Паспорт насоса и наряды как теги модели.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+          <li class="later"><details><summary><span class="n">13</span><span class="t">Сводка: история, паспорт и кадр камеры</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Сводный экран в Grafana.</li><li>Тренды, тревоги, данные внешней базы и кадр камеры на одном экране.</li><li>Все данные берутся через одну модель.</li></ul><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+        <p>Сейчас доступны первые три урока. Остальные готовятся.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+</body>
+</html>

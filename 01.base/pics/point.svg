@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 260">
+  <rect width="760" height="260" fill="#f4f7f6"/>
+  <line x1="60" y1="150" x2="700" y2="150" stroke="#d7e2e2" stroke-width="4"/>
+  <circle cx="250" cy="150" r="9" fill="#c4552a"/>
+  <circle cx="470" cy="150" r="11" fill="#0f6e73"/>
+  <text x="60" y="182" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="13">раньше</text>
+  <text x="640" y="182" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="13">позже</text>
+  <rect x="390" y="36" width="300" height="150" rx="16" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+  <text x="412" y="70" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="13">время</text>
+  <text x="412" y="94" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="18">сейчас</text>
+  <text x="412" y="128" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="13">значение</text>
+  <text x="412" y="154" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="18">4,2 бар</text>
+  <text x="560" y="128" fill="#5c6e74" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="13">качество</text>
+  <text x="560" y="154" fill="#08343a" font-family="Segoe UI, DejaVu Sans, sans-serif" font-size="18">0</text>
+</svg>
