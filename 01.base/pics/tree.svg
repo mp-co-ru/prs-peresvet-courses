@@ -8,8 +8,8 @@
     <rect x="250" y="96" width="260" height="46" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
     <text x="380" y="126" text-anchor="middle" fill="#08343a" font-size="18">Цех</text>
     <line x1="380" y1="142" x2="380" y2="168" stroke="#0f6e73" stroke-width="2"/>
-    <rect x="250" y="168" width="260" height="46" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
-    <text x="380" y="198" text-anchor="middle" fill="#08343a" font-size="18">НС-1</text>
+    <rect x="250" y="168" width="260" height="46" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="380" y="198" text-anchor="middle" fill="#08343a" font-size="18">Насосы <tspan fill="#5c6e74" font-size="14">(папка)</tspan></text>
     <line x1="380" y1="214" x2="380" y2="240" stroke="#0f6e73" stroke-width="2"/>
     <rect x="250" y="240" width="260" height="46" rx="14" fill="#fff6f1" stroke="#c4552a" stroke-width="2"/>
     <text x="380" y="270" text-anchor="middle" fill="#08343a" font-size="18">Насос</text>
