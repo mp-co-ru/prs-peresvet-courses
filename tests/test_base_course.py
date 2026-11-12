@@ -15,7 +15,7 @@ def test_base_course_pages():
     lessons = [(COURSE / f"lesson-0{n}.html").read_text(encoding="utf-8") for n in (1, 2, 3)]
     install, tags, objects = lessons
     assert "Курс по платформе" in page
-    assert "НС-1" in page
+    assert "Насосная станция" in page
     assert "Главная задача платформы — создание модели объекта" in page
     assert "В платформе параметр называется <b>тегом</b>" in page
     first_tag = page.index("тег", page.index("<header"))
@@ -43,8 +43,8 @@ def test_base_course_pages():
     assert "Новый объект" not in tags
     assert "Новый объект" in objects and "Перетащите" in objects
     program = page[page.index('<ol class="path">'):page.index("</ol>", page.index('<ol class="path">'))]
-    assert program.count("<details>") == 13
-    assert program.count('class="chev"') == 13
+    assert program.count("<details>") == 9
+    assert program.count('class="chev"') == 9
     for n in (1, 2, 3):
         assert f'href="lesson-0{n}.html"' in program
     first = program[:program.index("</details>")]
