@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Расширенный курс по платформе МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <nav class="nav">
+        <span class="brand">Учебный курс</span>
+        <a href="../01.base/index.html">Базовый курс</a>
+        <a href="https://mp-co-ru.github.io/peresvet/index.html">Справочник</a>
+      </nav>
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <div class="hero-title">
+            <img class="logo" src="pics/logo.svg" alt="Знак МПК-Пересвет">
+            <h1>Расширенный курс по платформе <span>МПК-Пересвет</span></h1>
+          </div>
+          <p class="lead">Продолжение <a href="../01.base/index.html">базового курса</a>. Каждый урок подробно разбирает одну тему, которую базовый курс только наметил. Уроки начинаются с модели насосной станции, на которой закончился базовый курс, поэтому их можно проходить в любом порядке.</p>
+          <ul class="pills">
+            <li>расширенный курс</li>
+            <li>15 тем</li>
+            <li>уроки в любом порядке</li>
+            <li>тот же учебный пример</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="prep" class="prep-section">
+      <div class="wrap">
+        <details class="intro">
+          <summary><h2>Подготовка</h2><span class="chev" aria-hidden="true"></span></summary>
+          <section class="intro-part prep">
+            <h2>С чего начинать</h2>
+            <ul>
+              <li><b>Пройден базовый курс.</b> На стенде собрана модель насосной станции: теги и объекты, метод «Расчёт мощности», тревога «Высокий уровень», расписание, камера и экран «Насосная станция». Каждый урок расширенного курса начинается с этой модели.</li>
+              <li><b>Знания из подготовки к базовому курсу</b> — формат JSON, основы JSONata и Python — нужны в каждом уроке.</li>
+              <li><b>Для отдельных тем</b> понадобится больше: администрирование Docker и Linux — для устройства платформы, SQL — для интеграционных хранилищ, HTML и JavaScript — для видео на своей странице. В начале каждого урока сказано, что именно нужно.</li>
+            </ul>
+          </section>
+        </details>
+      </div>
+    </section>
+
+    <section id="program">
+      <div class="wrap">
+        <h2>Программа</h2>
+        <p>Темы разложены по разделам. У каждой указан урок базового курса, который она продолжает, и раздел справочника: пока урок готовится, подробности можно прочитать там.</p>
+        <h3>Платформа</h3>
+        <ol class="path" start="1">
+          <li id="lesson-01" class="later"><details><summary><span class="n">01</span><span class="t">Устройство и администрирование платформы</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Из каких сервисов состоит платформа и зачем каждый нужен.</li><li>Все настройки файла <code>.env</code>, установка из исходного кода и на сервер без доступа в интернет.</li><li>Свой сертификат для HTTPS, остановка и обновление платформы.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-01.html">1</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/installation.html">«Установка»</a>, <a href="https://mp-co-ru.github.io/peresvet/administration.html">«Администрирование»</a></p><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+        <h3>Модель и данные</h3>
+        <ol class="path" start="2">
+          <li id="lesson-02" class="later"><details><summary><span class="n">02</span><span class="t">Теги и данные в деталях</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Все типы значений тегов: целый, строковый, JSON и другие.</li><li>Коды качества и что делать с недостоверными значениями; шаговые теги и значимое отклонение.</li><li>Несколько хранилищ и выбор хранилища для тега.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-02.html">2</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/tags.html">«Теги»</a>, <a href="https://mp-co-ru.github.io/peresvet/historical_data.html">«Исторические данные»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-03" class="later"><details><summary><span class="n">03</span><span class="t">Модель через API</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Создание, поиск и перенос узлов модели запросами к API.</li><li>Копирование, приостановка и удаление целых веток; папки во всех ветках дерева.</li><li>Групповой перенос и выгрузка дерева в CSV.</li></ul><p class="from">Продолжает уроки <a href="../01.base/lesson-03.html">3</a>, <a href="../01.base/lesson-06.html">6</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/api.html">«API»</a>, <a href="https://mp-co-ru.github.io/peresvet/objects.html">«Объекты»</a>, <a href="https://mp-co-ru.github.io/peresvet/folders.html">«Папки»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-04" class="later"><details><summary><span class="n">04</span><span class="t">Данные из своих программ</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Запись и чтение значений тегов из программы на Python.</li><li>Запись большими пачками и по WebSocket.</li><li>Метки времени, коды качества и пропуски связи на стороне программы.</li></ul><p class="from">Продолжает уроки <a href="../01.base/lesson-02.html">2</a>, <a href="../01.base/lesson-06.html">6</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/historical_data.html">«Исторические данные»</a>, <a href="https://mp-co-ru.github.io/peresvet/data_api.html">«API данных»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-05" class="later"><details><summary><span class="n">05</span><span class="t">Внешние базы данных: интеграционные хранилища</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Тег, который читает и пишет данные во внешней базе, а не в истории платформы.</li><li>Операции чтения и записи на SQL и операции по умолчанию.</li><li>Справочники и планы из ERP как обычные теги модели.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-02.html">2</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/integrational_v2.html">«Интеграционные хранилища»</a></p><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+        <h3>Методы</h3>
+        <ol class="path" start="6">
+          <li id="lesson-06" class="later"><details><summary><span class="n">06</span><span class="t">Разработка методов в VSCode</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Проект на prs-methods-core: тесты, запуск и отладка.</li><li>Несколько параметров и несколько инициаторов у одного метода.</li><li>Запуск исполнителя как службы.</li></ul><p class="from">Продолжает уроки <a href="../01.base/lesson-04.html">4</a>, <a href="../01.base/lesson-07.html">7</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/methods.html">«Методы»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-07" class="later"><details><summary><span class="n">07</span><span class="t">Методы чтения и записи</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Тег, значение которого возвращает метод, а не хранилище.</li><li>Все типы методов: чтение, запись, действия при чтении и записи.</li><li>Источники параметров: запрос клиента, запрос к платформе, внешний HTTP-запрос, постоянные значения.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-04.html">4</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/methods.html">«Методы»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-08" class="later"><details><summary><span class="n">08</span><span class="t">Каталог и пакеты методов</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Описание методов из <code>--yaml</code> и загрузка в папку «Методы».</li><li>Ссылки на один метод каталога из многих тегов.</li><li>Пакет методов: исполнитель вместе с описанием его адресов.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-04.html">4</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/methods.html">«Методы»</a></p><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+        <h3>Источники данных и события</h3>
+        <ol class="path" start="9">
+          <li id="lesson-09" class="later"><details><summary><span class="n">09</span><span class="t">Свой коннектор</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Как коннектор получает свою конфигурацию из модели и опрашивает оборудование.</li><li>Передача значений в платформу и коды качества при обрыве связи.</li><li>Журнал коннектора и команды коннектору из Конфигуратора.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-06.html">6</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/connectors_guide.html">«Коннекторы»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-10" class="later"><details><summary><span class="n">10</span><span class="t">Тревоги по расчёту</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Тревога по результату расчёта: метод под тревогой решает, наступила ли она.</li><li>История тревог за период и по всему объекту.</li><li>Методы на пропадание и квитирование тревоги.</li><li>Тревоги на тегах-строках и тегах JSON.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-05.html">5</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/alerts.html">«Тревоги»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-11" class="later"><details><summary><span class="n">11</span><span class="t">Расписания и отчёты</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Расписания с датой окончания и разовые события.</li><li>Отчёт, который метод формирует сам и отправляет по почте.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-07.html">7</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/schedules.html">«Расписания»</a></p><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+        <h3>Видео и экраны</h3>
+        <ol class="path" start="12">
+          <li id="lesson-12" class="later"><details><summary><span class="n">12</span><span class="t">Видео в деталях</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Поворот камеры, зум и настройки изображения по OnVif, микрофон камеры.</li><li>Зона распознавания людей.</li><li>Место под архив и нагрузка на сервер; видео на своей веб-странице.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-08.html">8</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/video.html">«Подключение видеокамер»</a>, <a href="https://mp-co-ru.github.io/peresvet/video_tag.html">«Видеопоток: API»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-13" class="later"><details><summary><span class="n">13</span><span class="t">Экраны оператора</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Переменные экрана: один экран на любой насос станции.</li><li>Мнемосхемы и живое видео на экране.</li><li>Квитирование тревог с экрана.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-09.html">9</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/grafana/grafana_integration.html">«Создание экранов в Grafana»</a></p><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+        <h3>Безопасность и ИИ</h3>
+        <ol class="path" start="14">
+          <li id="lesson-14" class="later"><details><summary><span class="n">14</span><span class="t">Права доступа</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>Пользователи и права доступа к API и к данным модели.</li><li>Права доступа к экранам Grafana.</li><li>Чем открытая редакция отличается от промышленной.</li></ul><p class="from">Продолжает уроки <a href="../01.base/lesson-06.html">6</a>, <a href="../01.base/lesson-09.html">9</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/security_enterprise_setup.html">«Безопасность промышленной редакции»</a></p><span class="soon">Урок готовится</span></div></details></li>
+          <li id="lesson-15" class="later"><details><summary><span class="n">15</span><span class="t">ИИ-агенты и MCP</span><span class="chev" aria-hidden="true"></span></summary><div class="more"><ul><li>MCP-серверы платформы и Grafana.</li><li>Агент строит модель, настраивает методы и экраны по описанию задачи.</li></ul><p class="from">Продолжает урок <a href="../01.base/lesson-01.html">1</a> базового курса · Справочник: <a href="https://mp-co-ru.github.io/peresvet/mcp.html">«MCP-сервер платформы»</a></p><span class="soon">Урок готовится</span></div></details></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+  <script src="course.js"></script>
+</body>
+</html>

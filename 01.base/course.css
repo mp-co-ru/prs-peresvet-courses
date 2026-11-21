@@ -277,14 +277,48 @@ details[open] > summary .chev { transform: translateY(25%) rotate(-135deg); }
 .spoiler { margin: 0.8rem -1rem; padding: 0.45rem 1rem; border-radius: 14px; }
 .spoiler[open] { background: #edf4f4; }
 .spoiler[open] code { background: #fff; }
+.spoiler[open] pre code { background: none; }
+/* Дополнение к уроку: необязательная часть, свёрнута по умолчанию */
+.addon {
+  margin: 0.9rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--teal);
+  border-radius: 20px;
+  background: var(--card);
+}
+.addon > summary {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+  color: var(--teal-deep);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 700;
+}
+.addon > summary::-webkit-details-marker { display: none; }
+.addon > summary .t { flex: 1 1 auto; }
+.addon > summary .tag {
+  flex: 0 0 auto;
+  padding: 0.15rem 0.6rem;
+  border-radius: 10px;
+  background: var(--mint);
+  color: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.addon[open] > summary { margin-bottom: 0.4rem; }
+.addon h3 { margin: 1.5rem 0 0.5rem; }
 .spoiler > summary { cursor: pointer; font-weight: 400; color: var(--teal); }
 .spoiler > :not(summary) { margin-left: 1.2rem; }
 .spoiler > :last-child { margin-bottom: 0.4rem; }
 @media (max-width: 800px) {
   .spoiler { margin-left: 0; margin-right: 0; }
 }
-.prep { padding: 1.2rem 1.4rem; }
 .prep ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+.prep li { margin: 0.35rem 0; }
 .intro {
   background: var(--card);
   border: 1px solid var(--line);
@@ -311,6 +345,8 @@ details[open] > summary .chev { transform: translateY(25%) rotate(-135deg); }
 .path .more li { margin: 0.2rem 0; }
 .path .open { font-weight: 700; text-decoration: none; }
 .path .soon { color: var(--muted); font-size: 0.9rem; }
+.path .from { margin: 0 0 0.7rem; color: var(--muted); font-size: 0.9rem; }
+#program h3 { margin: 1.8rem 0 0.7rem; color: var(--teal-deep); font-size: 1.2rem; }
 .path .n {
   flex: 0 0 auto;
   width: 2.4rem;

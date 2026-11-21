@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 6. Поставка данных: скрипт-имитатор — курс МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="index.html"><img class="nav-logo" src="pics/logo.svg" alt=""> Курс по платформе МПК-Пересвет</a>
+      <span>Урок 6 из 9</span>
+    </div>
+  </header>
+  <main class="wrap lesson">
+    <h1>Поставка данных: скрипт-имитатор</h1>
+    <div class="goal">
+      <div class="k">Чему учимся на этом уроке</div>
+      <ul>
+        <li>запускать программу, которая сама поставляет данные в модель;</li>
+        <li>видеть в Конфигураторе, как модель живёт на этих данных: расчёт и тревога срабатывают без участия человека.</li>
+      </ul>
+    </div>
+    <div class="outcome">
+      <div class="k">Результат урока</div>
+      <p>Скрипт-имитатор каждые 5 секунд записывает в «Давление», «Ток» и «Уровень» новые значения. Метод из урока 4 сразу пересчитывает «Мощность», а тревога из урока 5 сама возникает и пропадает вместе с уровнем.</p>
+    </div>
+    <p>До сих пор значения в теги записывал человек в Конфигураторе. На настоящей станции их приносят приборы и контроллеры: программа-коннектор опрашивает оборудование и записывает показания в теги. Записывает она тем же запросом, которым пользуется сам Конфигуратор, — <code>POST /v1/data/</code>. Любая программа, которая умеет отправлять HTTP-запросы, может поставлять данные в модель.</p>
+    <p>Приборов у нас нет, поэтому напишем имитатор — короткий скрипт, который выдумывает показания насосной станции и записывает их в платформу.</p>
+
+    <section class="step">
+      <span class="num">1</span>
+      <h2>Скрипт-имитатор</h2>
+      <p>Имитатору хватает Python, который уже есть в Ubuntu Server, — сторонние библиотеки не нужны. Создайте файл на виртуальной машине командой ниже, её можно скопировать целиком:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>cat &gt; simulator.py &lt;&lt;'EOF'</span>
+<span class="line">"""Имитатор насосной станции: записывает давление, ток и уровень в платформу."""</span>
+<span class="line">import json</span>
+<span class="line">import math</span>
+<span class="line">import os</span>
+<span class="line">import random</span>
+<span class="line">import ssl</span>
+<span class="line">import time</span>
+<span class="line">import urllib.parse</span>
+<span class="line">import urllib.request</span>
+<span class="line"></span>
+<span class="line">API = os.environ.get("PRS_API", "https://localhost/v1")</span>
+<span class="line">PERIOD = 5  # секунд между записями</span>
+<span class="line"></span>
+<span class="line"># у платформы самоподписанный сертификат, поэтому проверку отключаем</span>
+<span class="line">SSL = ssl.create_default_context()</span>
+<span class="line">SSL.check_hostname = False</span>
+<span class="line">SSL.verify_mode = ssl.CERT_NONE</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">def request(method, path, body=None):</span>
+<span class="line">    data = json.dumps(body).encode() if body is not None else None</span>
+<span class="line">    req = urllib.request.Request(</span>
+<span class="line">        API + path, data=data, method=method,</span>
+<span class="line">        headers={"Content-Type": "application/json"},</span>
+<span class="line">    )</span>
+<span class="line">    with urllib.request.urlopen(req, context=SSL) as resp:</span>
+<span class="line">        return json.loads(resp.read() or "null")</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">def tag_id(name):</span>
+<span class="line">    query = {"base": "prs", "scope": 2, "filter": {"cn": [name]}, "attributes": ["cn"]}</span>
+<span class="line">    found = request("GET", "/tags/?q=" + urllib.parse.quote(json.dumps(query)))["data"]</span>
+<span class="line">    if not found:</span>
+<span class="line">        raise SystemExit(f"Тег «{name}» не найден")</span>
+<span class="line">    return found[0]["id"]</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">tags = {name: tag_id(name) for name in ("Давление", "Ток", "Уровень")}</span>
+<span class="line">print("Теги найдены:", ", ".join(tags), flush=True)</span>
+<span class="line"></span>
+<span class="line">start = time.time()</span>
+<span class="line">while True:</span>
+<span class="line">    t = time.time() - start</span>
+<span class="line">    values = {</span>
+<span class="line">        "Давление": round(4.2 + 0.3 * math.sin(t / 40) + random.uniform(-0.05, 0.05), 2),</span>
+<span class="line">        "Ток": round(12.5 + 2.5 * math.sin(t / 25) + random.uniform(-0.2, 0.2), 1),</span>
+<span class="line">        "Уровень": round(75 + 20 * math.sin(t / 50), 1),</span>
+<span class="line">    }</span>
+<span class="line">    request("POST", "/data/", {"data": [</span>
+<span class="line">        {"tagId": tags[name], "data": [[value]]} for name, value in values.items()</span>
+<span class="line">    ]})</span>
+<span class="line">    print(f"давление {values['Давление']} бар, ток {values['Ток']} А, уровень {values['Уровень']} %", flush=True)</span>
+<span class="line">    time.sleep(PERIOD)</span>
+<span class="line">EOF</span></code></pre>
+      <p>Что делает скрипт:</p>
+      <ul>
+        <li>функция <code>tag_id</code> находит тег по имени запросом <code>GET /v1/tags/</code>, поэтому идентификаторы копировать не нужно. В учебной модели у каждого из трёх тегов уникальное имя;</li>
+        <li>в цикле скрипт придумывает показания: уровень плавно ходит от 55 до 95 % за пять минут, ток — от 10 до 15 А, давление немного колеблется вокруг 4,2 бар;</li>
+        <li>все три значения уходят в платформу одним запросом <code>POST /v1/data/</code>, затем скрипт ждёт 5 секунд.</li>
+      </ul>
+      <p>Тело запроса устроено просто: список тегов, у каждого — идентификатор <code>tagId</code> и список значений <code>data</code>. Если значение — одно число, платформа запишет его с текущей меткой времени, как Конфигуратор при пустом поле «Метка времени».</p>
+      <details class="spoiler">
+        <summary>Как записать значение с меткой времени и кодом качества</summary>
+        <p>Значение можно передать полностью — <code>[метка времени, величина, код качества]</code>, например <code>["2026-11-16T16:00:00+03:00", 4.4, 0]</code>. Метку можно задать и числом микросекунд. Если показание недостоверно, коннектор записывает его с кодом качества, отличным от нуля: так поступит, например, программа, у которой пропала связь с прибором. Коды описаны в справочнике, в разделе <a href="https://mp-co-ru.github.io/peresvet/historical_data.html">«Исторические данные»</a>.</p>
+      </details>
+    </section>
+
+    <section class="step">
+      <span class="num">2</span>
+      <h2>Запуск</h2>
+      <p>Проверьте, что исполнитель из урока 4 работает: в его терминале по-прежнему висит строка «Исполнитель подключён к платформе». Если вы его останавливали, запустите снова. В другом терминале запустите имитатор:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>python3 simulator.py</span></code></pre>
+      <pre><code>Теги найдены: Давление, Ток, Уровень
+давление 4.23 бар, ток 12.4 А, уровень 75.0 %
+давление 4.19 бар, ток 12.8 А, уровень 77.0 %
+давление 4.23 бар, ток 13.6 А, уровень 79.0 %</code></pre>
+      <p>А в терминале исполнителя на каждую строку имитатора появляется строка расчёта:</p>
+      <pre><code>ток 12.4 А -&gt; мощность 6.94 кВт
+ток 12.8 А -&gt; мощность 7.16 кВт
+ток 13.6 А -&gt; мощность 7.61 кВт</code></pre>
+      <p>Модель ожила: новое значение тока запускает метод, и «Мощность» пересчитывается без участия человека. Остановить имитатор можно клавишами <code>Ctrl+C</code>.</p>
+      <details class="spoiler">
+        <summary>Если имитатор работает не на виртуальной машине</summary>
+        <p>Адрес API скрипт берёт из переменной окружения <code>PRS_API</code>, по умолчанию — <code>https://localhost/v1</code>. Чтобы запустить его на своём компьютере, укажите адрес виртуальной машины: <code>PRS_API=https://192.168.1.87/v1 python3 simulator.py</code>. В Windows переменную задают командой <code>set PRS_API=https://192.168.1.87/v1</code>.</p>
+      </details>
+    </section>
+
+    <section class="step">
+      <span class="num">3</span>
+      <h2>Данные в модели</h2>
+      <p>Дайте имитатору поработать несколько минут. Откройте в Конфигураторе тег «Уровень», вкладку «Хранилище» и прочитайте историю: включите флажок <code>actual</code> и задайте <code>start</code> на полминуты раньше текущего времени. Точки идут каждые 5 секунд, уровень то растёт, то падает. Если задать <code>start</code> раньше, таблица станет длинной: за каждую минуту работы имитатора в ней 12 строк.</p>
+      <figure class="figure figure-shot figure-wide">
+        <img src="pics/06-lesson-01.png" style="width:780px" alt="Чтение тега «Уровень» с actual и start: точки каждые 5 секунд">
+        <figcaption>История «Уровня»: значения от имитатора.</figcaption>
+      </figure>
+      <p>Так же прочитайте «Мощность»: её точки стоят на тех же метках времени, что и точки «Тока».</p>
+      <figure class="figure figure-shot figure-wide">
+        <img src="pics/06-lesson-02.png" style="width:780px" alt="Чтение тега «Мощность» с actual и start: точки каждые 5 секунд, рассчитанные методом">
+        <figcaption>«Мощность» считается на каждое новое значение тока.</figcaption>
+      </figure>
+      <p>Теперь следите за деревом. Когда уровень поднимается до 90 %, у «Насоса» загорается красный кружок, а в его списке тревог после «Читать данные» появляется «Высокий уровень» в состоянии «Активна, не квитирована». Примерно через минуту уровень опускается, и тревога пропадает. Если её не квитировать, кружок горит, пока оператор не нажмёт «Квитировать». В списке такая тревога видна со снятым флажком <code>fired</code> — в состоянии «Пропала, не квитирована», как в уроке 5.</p>
+    </section>
+
+    <section class="check">
+      <h2>Проверка</h2>
+      <ul>
+        <li>Имитатор каждые 5 секунд печатает строку с давлением, током и уровнем.</li>
+        <li>В истории «Уровня» и «Мощности» точки идут каждые 5 секунд.</li>
+        <li>Тревога «Высокий уровень» возникает и пропадает сама, вслед за уровнем, а красный кружок у «Насоса» показывает это в дереве.</li>
+      </ul>
+    </section>
+
+    <aside class="deeper">
+      <h2>В расширенном курсе</h2>
+      <ul>
+        <li><a href="../02.advanced/index.html#lesson-09">коннекторы: как настоящая программа опрашивает оборудование и получает свою конфигурацию из модели</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-04">запись по WebSocket и большими пачками</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-03">поиск узлов модели через API</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-14">права доступа к API</a>.</li>
+      </ul>
+      <p>Расширенный курс готовится, ссылки выше ведут в его <a href="../02.advanced/index.html">программу</a>. Пока эти темы описаны в справочнике: <a href="https://mp-co-ru.github.io/peresvet/historical_data.html">«Исторические данные»</a>, <a href="https://mp-co-ru.github.io/peresvet/connectors_guide.html">«Коннекторы»</a>, <a href="https://mp-co-ru.github.io/peresvet/api.html">«API»</a>.</p>
+    </aside>
+
+    <p>Пусть имитатор работает и дальше: в следующем уроке метод по расписанию будет подводить итоги по его данным.</p>
+    <p><a href="lesson-05.html">← Урок 5</a> · <a href="lesson-07.html">Урок 7. Методы по расписанию →</a></p>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+  <script src="course.js"></script>
+</body>
+</html>

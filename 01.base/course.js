@@ -41,11 +41,12 @@
     pre.parentNode.insertBefore(wrap, pre);
     wrap.appendChild(pre);
 
+    var label = pre.dataset.copyTitle || 'Копировать команду';
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'copy-btn';
-    btn.title = 'Копировать команду';
-    btn.setAttribute('aria-label', 'Копировать команду');
+    btn.title = label;
+    btn.setAttribute('aria-label', label);
     btn.innerHTML = ICON_COPY;
     wrap.appendChild(btn);
 
@@ -59,9 +60,22 @@
         timer = setTimeout(function () {
           btn.innerHTML = ICON_COPY;
           btn.classList.remove('done');
-          btn.title = 'Копировать команду';
+          btn.title = label;
         }, 1500);
       });
     });
   });
+})();
+
+// Ссылка вида index.html#prep раскрывает свёрнутый блок, на который ведёт.
+(function () {
+  function openTarget() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    var target = id && document.getElementById(id);
+    if (!target) return;
+    var block = target.matches('details') ? target : target.querySelector('details');
+    if (block) block.open = true;
+  }
+  openTarget();
+  window.addEventListener('hashchange', openTarget);
 })();

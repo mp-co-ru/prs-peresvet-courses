@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300">
+  <rect width="760" height="300" fill="#f4f7f6"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#0f6e73"/>
+    </marker>
+  </defs>
+  <g font-family="Segoe UI, DejaVu Sans, sans-serif">
+    <rect x="250" y="20" width="260" height="46" rx="14" fill="#fff6f1" stroke="#c4552a" stroke-width="2"/>
+    <text x="380" y="50" text-anchor="middle" fill="#08343a" font-size="18">Насос</text>
+    <line x1="380" y1="66" x2="380" y2="88" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="130" y1="88" x2="630" y2="88" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="130" y1="88" x2="130" y2="108" stroke="#0f6e73" stroke-width="2"/>
+    <line x1="630" y1="88" x2="630" y2="108" stroke="#0f6e73" stroke-width="2"/>
+    <rect x="40" y="108" width="180" height="64" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2"/>
+    <text x="130" y="136" text-anchor="middle" fill="#08343a" font-size="16">Ток</text>
+    <text x="130" y="156" text-anchor="middle" fill="#5c6e74" font-size="13">А</text>
+    <rect x="540" y="108" width="180" height="64" rx="14" fill="#ffffff" stroke="#c4552a" stroke-width="2"/>
+    <text x="630" y="136" text-anchor="middle" fill="#08343a" font-size="16">Мощность</text>
+    <text x="630" y="156" text-anchor="middle" fill="#5c6e74" font-size="13">кВт</text>
+    <line x1="630" y1="172" x2="630" y2="200" stroke="#0f6e73" stroke-width="2" stroke-dasharray="5 4"/>
+    <rect x="290" y="200" width="180" height="76" rx="14" fill="#d7f3ef" stroke="#0f6e73" stroke-width="2"/>
+    <text x="380" y="230" text-anchor="middle" fill="#08343a" font-size="16">метод</text>
+    <text x="380" y="254" text-anchor="middle" fill="#0f6e73" font-size="15" font-family="DejaVu Sans Mono, monospace">pump.power</text>
+    <rect x="540" y="200" width="180" height="76" rx="14" fill="#ffffff" stroke="#0f6e73" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="630" y="232" text-anchor="middle" fill="#5c6e74" font-size="14">метод лежит</text>
+    <text x="630" y="252" text-anchor="middle" fill="#5c6e74" font-size="14">в теге «Мощность»</text>
+    <path d="M130 172V238H286" fill="none" stroke="#0f6e73" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="140" y="228" fill="#c4552a" font-size="13">новое значение</text>
+    <path d="M470 222C510 222 520 172 600 176" fill="none" stroke="#c4552a" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="478" y="196" fill="#c4552a" font-size="13">результат</text>
+  </g>
+</svg>

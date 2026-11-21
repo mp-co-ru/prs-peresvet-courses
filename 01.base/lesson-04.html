@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 4. Расчётный тег «Мощность» — курс МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="index.html"><img class="nav-logo" src="pics/logo.svg" alt=""> Курс по платформе МПК-Пересвет</a>
+      <span>Урок 4 из 9</span>
+    </div>
+  </header>
+  <main class="wrap lesson">
+    <h1>Расчётный тег «Мощность»</h1>
+    <div class="goal">
+      <div class="k">Чему учимся на этом уроке</div>
+      <ul>
+        <li>понимать, что такое метод и кто его выполняет;</li>
+        <li>писать и запускать исполнитель — программу на Python с функцией расчёта;</li>
+        <li>создавать вычислительный метод в Конфигураторе: адрес, тип, инициатор и параметр.</li>
+      </ul>
+    </div>
+    <div class="outcome">
+      <div class="k">Результат урока</div>
+      <p>К концу урока у «Насоса» есть тег «Мощность». Как только в «Ток» приходит новое значение, платформа вызывает метод, и мощность двигателя записывается в историю тега с той же меткой времени.</p>
+    </div>
+    <p>До сих пор значения тегов появлялись только одним способом: мы записывали их вручную. Но многие параметры никто не измеряет — их считают по другим. Мощность двигателя насоса прибор не показывает, зато её можно вычислить по току. Для таких расчётов в платформе есть <strong>методы</strong>.</p>
+    <p>Метод — это функция, которую платформа вызывает по событию. В этом уроке событие — новое значение тега «Ток», а результат функции становится новым значением тега «Мощность». Сама функция выполняется не внутри платформы, а в отдельной программе — <strong>исполнителе</strong>. Исполнитель подключается к брокеру сообщений RabbitMQ платформы и сообщает, какие функции он умеет выполнять и под какими адресами.</p>
+    <p>Исполнитель напишем в одном файле прямо на виртуальной машине — этого хватит, чтобы увидеть, как работает метод. Как вести код методов в проекте VSCode на базе <a href="https://github.com/Vovaman/prs-methods-core">prs-methods-core</a>, с тестами и отладкой, рассказывает дополнение в конце урока.</p>
+
+    <section class="step">
+      <span class="num">1</span>
+      <h2>Что собираем</h2>
+      <figure class="figure figure-half">
+        <img src="pics/power.svg" alt="Объект Насос с тегами Ток и Мощность; новое значение тока запускает метод pump.power, результат записывается в тег Мощность">
+        <figcaption>Новое значение «Тока» запускает метод <code>pump.power</code>, результат записывается в «Мощность». Узел метода лежит в теге, который он рассчитывает.</figcaption>
+      </figure>
+      <p>Двигатель насоса — трёхфазный, поэтому мощность считается по формуле <strong>P = √3 · U · I · cos φ</strong>, где I — ток из тега «Ток», U = 380 В — напряжение сети, cos φ = 0,85 — коэффициент мощности двигателя. Напряжение и коэффициент пока зададим прямо в коде, результат будем выдавать в киловаттах.</p>
+      <p>Понадобятся три вещи:</p>
+      <table>
+        <thead>
+          <tr><th>Что</th><th>Где</th><th>Зачем</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Тег «Мощность»</td><td>объект «Насос»</td><td>Хранит результат расчёта</td></tr>
+          <tr><td>Исполнитель</td><td>файл <code>worker.py</code> на виртуальной машине</td><td>Выполняет функцию расчёта под адресом <code>pump.power</code></td></tr>
+          <tr><td>Метод</td><td>тег «Мощность»</td><td>Говорит платформе: когда вызывать функцию, что ей передать и куда записать результат</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="step">
+      <span class="num">2</span>
+      <h2>Тег «Мощность»</h2>
+      <p>Нажмите «…» справа от объекта «Насос» (он лежит по пути «Цех → Насосы → Насос») и выберите <strong>Новый тег</strong>. Задайте имя <code>Мощность</code>, единицы измерения <code>кВт</code>, тип значений оставьте «Вещественный» и нажмите «Записать».</p>
+      <figure class="figure figure-shot">
+        <img src="pics/04-lesson-01.png" style="width:463px" alt="Дерево: в объекте «Насос» четыре тега — Давление, Ток, Уровень и Мощность, у «Мощности» открыт список проблем: подсказка «Нет привязки к коннектору и нет дочернего метода — данные не поступают»">
+        <figcaption>У «Насоса» появился тег «Мощность». Красный «!» открывает список проблем узла.</figcaption>
+      </figure>
+      <p>Настройка привязки к хранилищу по умолчанию включена (урок 2), поэтому тег сразу привязан к <code>psql</code>. Рядом с именем стоит красный «!» — у узла есть проблема. Нажмите на него: «Нет привязки к коннектору и нет дочернего метода — данные не поступают». Источником данных станет метод.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">3</span>
+      <h2>Исполнитель в одном файле</h2>
+      <p>Первый исполнитель запустим на той же виртуальной машине, где работает платформа. Подключитесь к ней по SSH. Программе нужен Python 3 — в Ubuntu Server он уже есть — и две библиотеки: <code>patio</code> и <code>patio-rabbitmq</code>. Через них функции исполнителя вызываются по сети. Установим их в отдельное виртуальное окружение, чтобы не трогать системный Python:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>sudo apt install -y python3-venv</span>
+<span class="line"><span class="prompt">$ </span>mkdir -p ~/pump-methods &amp;&amp; cd ~/pump-methods</span>
+<span class="line"><span class="prompt">$ </span>python3 -m venv .venv</span>
+<span class="line"><span class="prompt">$ </span>.venv/bin/pip install patio==0.1.4 patio-rabbitmq==0.1.1</span></code></pre>
+      <p>Теперь создайте файл <code>worker.py</code> с функцией расчёта. Команду ниже можно скопировать целиком и вставить в терминал: она запишет файл в текущую папку <code>~/pump-methods</code>.</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>cat &gt; worker.py &lt;&lt;'EOF'</span>
+<span class="line">import asyncio</span>
+<span class="line">import math</span>
+<span class="line">import os</span>
+<span class="line"></span>
+<span class="line">from patio import AsyncExecutor, Registry</span>
+<span class="line">from patio_rabbitmq import RabbitMQBroker</span>
+<span class="line"></span>
+<span class="line">rpc = Registry(project="methods_app", auto_naming=False)</span>
+<span class="line"></span>
+<span class="line">VOLTAGE = 380   # напряжение сети, В</span>
+<span class="line">COS_PHI = 0.85  # коэффициент мощности двигателя</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">@rpc("pump.power")</span>
+<span class="line">async def power(current):</span>
+<span class="line">    if current is None:</span>
+<span class="line">        return {"error": "нет значения тока"}</span>
+<span class="line">    kw = math.sqrt(3) * VOLTAGE * current * COS_PHI / 1000</span>
+<span class="line">    print(f"ток {current:g} А -&gt; мощность {kw:.2f} кВт", flush=True)</span>
+<span class="line">    return round(kw, 2)</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">async def main():</span>
+<span class="line">    async with AsyncExecutor(rpc, max_workers=4) as executor:</span>
+<span class="line">        async with RabbitMQBroker(executor, amqp_url=os.environ["amqp_url"]) as broker:</span>
+<span class="line">            print("Исполнитель подключён к платформе", flush=True)</span>
+<span class="line">            await broker.join()</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">asyncio.run(main())</span>
+<span class="line">EOF</span></code></pre>
+      <p>Что в этом коде важно:</p>
+      <ul>
+        <li><code>Registry(project="methods_app")</code> — имя проекта должно быть именно <code>methods_app</code>: так называется сервис методов платформы, и вызовы приходят от него;</li>
+        <li><code>@rpc("pump.power")</code> — <strong>адрес</strong> функции. По нему платформа находит, что вызывать. Этот же адрес мы укажем в методе в Конфигураторе;</li>
+        <li>функция получает аргументы по порядку и возвращает новое значение тега. Если считать не из чего, она возвращает словарь с ключом <code>error</code>: платформа запишет его в журнал, а значение тега не изменит;</li>
+        <li>адрес брокера программа берёт из переменной окружения <code>amqp_url</code>.</li>
+      </ul>
+    </section>
+
+    <section class="step">
+      <span class="num">4</span>
+      <h2>Запуск исполнителя</h2>
+      <p>Брокер RabbitMQ работает в контейнере платформы и принимает подключения на порту <code>5672</code> виртуальной машины. Имя пользователя и пароль — <code>prs</code> / <code>Peresvet21</code>, они заданы при установке. Задайте адрес брокера и запустите исполнитель:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>export amqp_url=amqp://prs:Peresvet21@localhost/</span>
+<span class="line"><span class="prompt">$ </span>.venv/bin/python worker.py</span></code></pre>
+      <p>Если подключение прошло, программа напишет:</p>
+      <pre><code>Исполнитель подключён к платформе</code></pre>
+      <p>Оставьте этот терминал открытым: пока исполнитель работает, платформа может вызывать его функцию. Остановить программу можно клавишами <code>Ctrl+C</code>. Пока исполнитель остановлен, вызывать функцию некому и мощность не считается.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">5</span>
+      <h2>Метод в Конфигураторе</h2>
+      <p>Вернитесь в Конфигуратор. Нажмите «…» справа от тега «Мощность» и выберите <strong>Новый метод</strong>. Метод создаётся внутри того тега, в который он будет записывать результат.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/04-lesson-02.png" style="width:432px" alt="Меню тега «Мощность»: новая тревога, новый метод, тревоги, копировать, приостановить узел, удалить узел">
+        <figcaption>Меню тега.</figcaption>
+      </figure>
+      <p>Под тегом появится узел «Новый метод», а справа откроются его свойства. Заполните их:</p>
+      <table>
+        <thead>
+          <tr><th>Поле</th><th>Значение</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Имя</td><td><code>Расчёт мощности</code></td></tr>
+          <tr><td>Адрес</td><td><code>pump.power</code></td></tr>
+          <tr><td>Метод/ссылка</td><td>Вновь создаваемый метод (по умолчанию)</td></tr>
+          <tr><td>Тип</td><td>Вычислительный (по умолчанию)</td></tr>
+        </tbody>
+      </table>
+      <p>«Вновь создаваемый метод» значит, что адрес и параметры задаются прямо здесь. Тип «Вычислительный» — метод вызывается по событию, а его результат записывается в тег. Другие типы методов отвечают на чтение и запись тега, о них — в расширенном курсе.</p>
+      <p>Осталось сказать, <strong>когда</strong> вызывать метод. Для этого есть блок «Инициаторы». Пока в нём ничего не выбрано, блок розовый, а лупа красная: без инициатора вычислительный метод никогда не запустится. Инициатором может быть тег, расписание или тревога — для каждого своя вкладка. Расписание появится в уроке 7, тревога — в дополнении к нему. На вкладке «Теги» нажмите лупу. В окне «Поиск тегов» начните вводить <code>Ток</code> и нажмите якорь ⚓ слева от строки «Насос → Ток». Закройте окно крестиком: тег «Ток» появился рядом с лупой.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/04-lesson-03.png" style="width:644px" alt="Свойства метода: имя «Расчёт мощности», адрес pump.power, «Вновь создаваемый метод», тип «Вычислительный», в инициаторах на вкладке «Теги» — тег «Ток»">
+        <figcaption>Свойства метода: адрес, тип и инициатор «Ток». Пока изменения не записаны, в заголовке ещё стоит «Новый метод».</figcaption>
+      </figure>
+    </section>
+
+    <section class="step">
+      <span class="num">6</span>
+      <h2>Параметр «Ток»</h2>
+      <p>Инициатор только запускает метод. Что передать функции, задают <strong>параметры</strong>. Откройте закладку <strong>Параметры</strong> рядом со «Свойствами». У нового метода параметров нет; у функции <code>power</code> один аргумент — ток, поэтому добавьте один параметр кнопкой «+». Появится закладка «#1».</p>
+      <ul>
+        <li>в поле «Имя» впишите <code>Ток</code> — это подпись для человека, функции важен только порядок закладок;</li>
+        <li>источник оставьте «Данные тега(-ов)»;</li>
+        <li>нажмите лупу и в окне «Выбор тегов» так же выберите якорем тег «Ток»;</li>
+        <li>в поле «JSONata к ответу» впишите <code>$.data[0].data[0][1]</code>.</li>
+      </ul>
+      <p>Чтобы понять, зачем нужно выражение JSONata, нажмите стрелку справа от строки URL — это пробный запрос. Платформа прочитает тег «Ток» так же, как мы делали это в уроке 2, и покажет ответ:</p>
+      <pre><code>{"data": [{"tagId": "…", "data": [[1794411094833222, 12.5, null]]}]}</code></pre>
+      <p>Функции из одного файла нужно одно число, а не весь ответ. Выражение <code>$.data[0].data[0][1]</code> берёт первый тег, его первую точку <code>[метка времени, значение, качество]</code> и из неё — значение. Стрелка справа от поля JSONata применяет выражение к ответу пробного запроса: под полем появится <code>12.5</code>.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/04-lesson-04.png" style="width:644px" alt="Закладка «Параметры»: параметр «Ток», источник «Данные тега(-ов)», выбран тег «Ток», ответ пробного запроса, JSONata $.data[0].data[0][1] и результат 12.5">
+        <figcaption>Параметр метода: тег «Ток» и выражение, которое достаёт из ответа значение.</figcaption>
+      </figure>
+      <p>Нажмите «Записать». Метод в дереве переименовался в «Расчёт мощности». Значок тега «Мощность» оранжевый — так Конфигуратор отмечает теги с вычислительным методом. Красный «!» у тега пропал: источник данных появился. Если пометка ещё видна, обновите страницу браузера.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/04-lesson-05.png" style="width:432px" alt="Дерево: тег «Мощность» с оранжевым значком и без пометки о проблеме, под ним метод «Расчёт мощности»">
+        <figcaption>Метод «Расчёт мощности» в теге «Мощность».</figcaption>
+      </figure>
+      <details class="spoiler">
+        <summary>Какой момент времени читает параметр</summary>
+        <p>При пробном запросе тег читается на текущий момент. При настоящем вызове платформа подставляет в запрос <code>finish</code>, равный метке времени нового значения тока. Поэтому функция всегда получает именно то значение, которое её запустило, а результат записывается в «Мощность» с той же меткой времени. Если параметров несколько, все они читаются на этот же момент.</p>
+      </details>
+    </section>
+
+    <section class="step">
+      <span class="num">7</span>
+      <h2>Проверка расчёта</h2>
+      <p>В уроке 2 мы записали в «Ток» значение 12.5, но метода тогда ещё не было, поэтому «Мощность» пока пуста. Метод вызывается только на <strong>новые</strong> значения тока. Запишем новое.</p>
+      <p>Откройте тег «Ток», вкладку «Хранилище», блок «Данные тега» и вкладку «Запрос на запись». Впишите значение <code>15</code> и нажмите иконку «Записать данные». В терминале с исполнителем сразу появится строка:</p>
+      <pre><code>ток 15 А -&gt; мощность 8.39 кВт</code></pre>
+      <p>Платформа увидела новое значение инициатора, прочитала параметр и вызвала функцию <code>pump.power</code>. Откройте тег «Мощность», вкладку «Хранилище» и на вкладке «Запрос на чтение» нажмите «Читать данные».</p>
+      <figure class="figure figure-shot figure-wide">
+        <img src="pics/04-lesson-06.png" style="width:780px" alt="Чтение тега «Мощность»: значение 8.39">
+        <figcaption>В «Мощности» — результат расчёта, 8,39 кВт.</figcaption>
+      </figure>
+      <p>Запишите в «Ток» ещё одно значение — <code>12.5</code>. Исполнитель напишет «мощность 6.99 кВт». Прочитайте «Мощность» ещё раз: раскройте параметры запроса, включите флажок <code>actual</code> (<code>format</code> уже включён) и задайте <code>start</code> раньше первой записи. В истории две точки, 8,39 и 6,99.</p>
+      <figure class="figure figure-shot figure-wide">
+        <img src="pics/04-lesson-07.png" style="width:780px" alt="Чтение тега «Мощность» с format, actual и start: две точки 8.39 и 6.99">
+        <figcaption>История «Мощности»: по точке на каждое новое значение тока.</figcaption>
+      </figure>
+      <p>Сравните метки времени этих точек с историей «Тока»: они совпадают с метками записанных значений тока. Запись в «Давление» или «Уровень» метод не запускает — у него один инициатор, «Ток».</p>
+    </section>
+
+    <section class="check">
+      <h2>Проверка</h2>
+      <ul>
+        <li>В «Насосе» четыре тега, у «Мощности» оранжевый значок и нет красного «!».</li>
+        <li>Под «Мощностью» лежит метод «Расчёт мощности»: адрес <code>pump.power</code>, тип «Вычислительный», инициатор «Ток», один параметр «Ток» с выражением JSONata.</li>
+        <li>В истории «Мощности» есть точки 8,39 и 6,99 с теми же метками времени, что у значений тока 15 и 12,5.</li>
+      </ul>
+    </section>
+
+    <details class="addon">
+      <summary><span class="tag">Дополнение</span><span class="t">Методы в VSCode на prs-methods-core</span><span class="chev" aria-hidden="true"></span></summary>
+      <h3>Проект</h3>
+      <p>Исполнитель в одном файле показывает механику, но для настоящей работы неудобен: подключение к брокеру, разбор аргументов, ошибки и переподключение при обрыве связи приходится писать самому. Эту часть берёт на себя <a href="https://github.com/Vovaman/prs-methods-core">prs-methods-core</a> — заготовка проекта с библиотекой <code>prs_methods</code>. В ней остаётся написать только функцию расчёта.</p>
+      <p>Работать будем на своём компьютере в VSCode. Понадобятся:</p>
+      <ul>
+        <li><a href="https://code.visualstudio.com/">VSCode</a> с расширением <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python</a> — вместе с ним ставится и отладчик;</li>
+        <li>Python 3.11 или новее и Git;</li>
+        <li>сетевой доступ с компьютера к порту <code>5672</code> виртуальной машины — этот порт платформа открывает при установке.</li>
+      </ul>
+      <p>Скачайте проект и откройте его в VSCode — командой <code>code</code> или через меню «File → Open Folder»:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>git clone https://github.com/Vovaman/prs-methods-core.git</span>
+<span class="line"><span class="prompt">$ </span>code prs-methods-core</span></code></pre>
+      <p>В проекте есть библиотека (<code>src/prs_methods</code>), примеры методов каждого типа (<code>examples</code>) и тесты (<code>tests</code>). Откройте терминал VSCode («Terminal → New Terminal»), создайте виртуальное окружение и установите проект вместе с инструментами для тестов:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>python3 -m venv .venv</span>
+<span class="line"><span class="prompt">$ </span>source .venv/bin/activate</span>
+<span class="line"><span class="prompt">$ </span>pip install -e ".[dev]"</span></code></pre>
+      <details class="spoiler">
+        <summary>Если у вас Windows</summary>
+        <p>Окружение создаётся командой <code>py -m venv .venv</code>, а включается командой <code>.venv\Scripts\activate</code>. Остальные команды урока те же.</p>
+      </details>
+      <p>VSCode заметит новое окружение и предложит использовать его для проекта — согласитесь. Если не предложил, нажмите <code>Ctrl+Shift+P</code>, выберите «Python: Select Interpreter» и укажите <code>.venv</code>.</p>
+      <h3>Метод и тесты</h3>
+      <p>Создайте в корне проекта файл <code>pump.py</code>:</p>
+      <pre class="cmd" data-copy-title="Копировать код"><code><span class="line">"""Методы учебной насосной станции."""</span>
+<span class="line">import math</span>
+<span class="line"></span>
+<span class="line">from prs_methods import main, method, number, param, require_good</span>
+<span class="line"></span>
+<span class="line">VOLTAGE = 380   # напряжение сети, В</span>
+<span class="line">COS_PHI = 0.85  # коэффициент мощности двигателя</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">@method(</span>
+<span class="line">    "pump.power",</span>
+<span class="line">    cn="Мощность двигателя",</span>
+<span class="line">    description="Мощность трёхфазного двигателя по току, кВт.",</span>
+<span class="line">    folder="Насосная станция",</span>
+<span class="line">    parameters=(param("Ток", "float", "Ток двигателя, А"),),</span>
+<span class="line">    probe=(12.5,),</span>
+<span class="line">)</span>
+<span class="line">def power(current):</span>
+<span class="line">    require_good(current)</span>
+<span class="line">    amps = number(current)</span>
+<span class="line">    kw = round(math.sqrt(3) * VOLTAGE * amps * COS_PHI / 1000, 2)</span>
+<span class="line">    print(f"ток {amps:g} А -&gt; мощность {kw} кВт", flush=True)</span>
+<span class="line">    return kw</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">if __name__ == "__main__":</span>
+<span class="line">    main()</span></code></pre>
+      <p>Сравните с <code>worker.py</code>:</p>
+      <ul>
+        <li><code>@method("pump.power", …)</code> регистрирует функцию под тем же адресом, что и раньше, поэтому метод в Конфигураторе менять не нужно. Остальные аргументы — название, описание, папка, параметры и пробные аргументы — нужны для каталога методов платформы, о нём — в расширенном курсе;</li>
+        <li><code>number(current)</code> достаёт число из аргумента в любом виде, в котором его может прислать платформа: готовым числом или полным ответом чтения тега;</li>
+        <li><code>require_good(current)</code> останавливает расчёт, если значения нет или у него плохой код качества. Тег «Мощность» в этом случае не меняется, а причина попадает в журнал платформы;</li>
+        <li><code>main()</code> подключается к брокеру, ждёт вызовов и сам переподключается при обрыве связи.</li>
+      </ul>
+      <p>Функция осталась обычной функцией Python, поэтому её можно проверить без платформы. Создайте файл <code>tests/test_pump.py</code>:</p>
+      <pre class="cmd" data-copy-title="Копировать код"><code><span class="line">import asyncio</span>
+<span class="line"></span>
+<span class="line">from prs_methods import registry</span>
+<span class="line"></span>
+<span class="line">from pump import power</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">def test_power_from_number():</span>
+<span class="line">    assert power(15) == 8.39</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">def test_power_from_tag_response():</span>
+<span class="line">    response = {"data": [{"tagId": "1", "data": [[1794411094833222, 12.5, None]]}]}</span>
+<span class="line">    assert power(response) == 6.99</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">def test_no_current():</span>
+<span class="line">    assert "error" in asyncio.run(registry["pump.power"](None))</span></code></pre>
+      <p>Первые два теста вызывают функцию с числом и с ответом платформы. Третий вызывает её так, как это делает исполнитель, — через <code>registry</code>: без значения тока метод возвращает ошибку, а не падает. Запустите тесты в терминале VSCode:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>python -m pytest tests/test_pump.py</span></code></pre>
+      <pre><code>tests/test_pump.py ...                                    [100%]
+3 passed</code></pre>
+      <h3>Запуск и отладка</h3>
+      <p>Сначала остановите исполнитель на виртуальной машине (<code>Ctrl+C</code>). Если под одним адресом работают два исполнителя, каждый вызов достаётся только одному из них, и разобраться, кто посчитал значение, будет трудно.</p>
+      <p>Исполнитель из VSCode запустим под отладчиком. Создайте в проекте файл <code>.vscode/launch.json</code>. В адресе брокера укажите адрес своей виртуальной машины — в примерах курса это <code>192.168.1.87</code>:</p>
+      <pre class="cmd" data-copy-title="Копировать код"><code><span class="line">{</span>
+<span class="line">  "version": "0.2.0",</span>
+<span class="line">  "configurations": [</span>
+<span class="line">    {</span>
+<span class="line">      "name": "Исполнитель pump.py",</span>
+<span class="line">      "type": "debugpy",</span>
+<span class="line">      "request": "launch",</span>
+<span class="line">      "program": "${workspaceFolder}/pump.py",</span>
+<span class="line">      "console": "integratedTerminal",</span>
+<span class="line">      "env": {</span>
+<span class="line">        "amqp_url": "amqp://prs:Peresvet21@192.168.1.87/"</span>
+<span class="line">      }</span>
+<span class="line">    }</span>
+<span class="line">  ]</span>
+<span class="line">}</span></code></pre>
+      <p>Откройте <code>pump.py</code> и поставьте точку останова на строке <code>amps = number(current)</code> — щелчок слева от номера строки. Нажмите <code>F5</code>: внизу откроется терминал, и исполнитель начнёт ждать вызовов. Пока ошибок нет, он ничего не печатает.</p>
+      <p>В Конфигураторе запишите в «Ток» значение <code>18</code>. VSCode остановится на точке останова, а на панели «Variables» будет видно, что пришло в <code>current</code>: число <code>18</code> — его достало выражение JSONata в параметре метода. Платформа дождётся ответа, поэтому можно спокойно пройти функцию по шагам (<code>F10</code>). Нажмите <code>F5</code>, чтобы продолжить. В терминале появится строка:</p>
+      <pre><code>ток 18 А -&gt; мощность 10.07 кВт</code></pre>
+      <p>а в истории «Мощности» — значение 10,07.</p>
+      <h3>Параметр без JSONata</h3>
+      <p>Выражение JSONata понадобилось потому, что функция в <code>worker.py</code> умела работать только с числом. Функция на <code>prs_methods</code> разбирает и полный ответ платформы, так что выражение больше не нужно.</p>
+      <p>Откройте метод «Расчёт мощности», закладку «Параметры» и нажмите на закладку параметра «#1 · Ток». Очистите поле «JSONata к ответу» и нажмите «Записать».</p>
+      <figure class="figure figure-shot">
+        <img src="pics/04-lesson-08.png" style="width:644px" alt="Закладка «Параметры» метода «Расчёт мощности»: тег «Ток», поле «JSONata к ответу» пустое">
+        <figcaption>Параметр без выражения JSONata: функция получит ответ платформы целиком.</figcaption>
+      </figure>
+      <p>Запишите в «Ток» значение <code>14</code>. На точке останова видно, что теперь <code>current</code> — это словарь с ответом чтения тега, как в пробном запросе. Продолжите выполнение: <code>number</code> достал из ответа значение, и исполнитель напечатал:</p>
+      <pre><code>ток 14 А -&gt; мощность 7.83 кВт</code></pre>
+      <p>Теперь функцию можно развивать как обычный код: менять формулу, добавлять параметры и тесты, отлаживать в VSCode. Чтобы платформа увидела изменения, перезапустите исполнитель. Как добавить параметры и инициаторы и запустить исполнитель как службу, рассказывает урок <a href="../02.advanced/index.html#lesson-06">«Разработка методов в VSCode»</a> расширенного курса.</p>
+    </details>
+
+    <aside class="deeper">
+      <h2>В расширенном курсе</h2>
+      <ul>
+        <li><a href="../02.advanced/index.html#lesson-07">методы чтения и записи: тег, значение которого возвращает метод, а не хранилище</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-08">каталог методов: описание из <code>python pump.py --yaml</code>, загрузка в папку «Методы» и ссылки на один метод из многих тегов</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-07">другие источники параметров: запросы к платформе, внешние HTTP-запросы, постоянные значения</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-06">запуск исполнителя как службы</a>.</li>
+      </ul>
+      <p>Расширенный курс готовится, ссылки выше ведут в его <a href="../02.advanced/index.html">программу</a>. Пока эти темы описаны в справочнике: <a href="https://mp-co-ru.github.io/peresvet/methods.html">«Методы»</a>, <a href="https://mp-co-ru.github.io/peresvet/configurator/configurator.html">«Конфигуратор модели»</a> — и в описании <a href="https://github.com/Vovaman/prs-methods-core">prs-methods-core</a>.</p>
+    </aside>
+
+    <p>Дальше — тревоги: платформа сообщит, когда уровень в баке поднимется выше 90 %.</p>
+    <p><a href="lesson-03.html">← Урок 3</a> · <a href="lesson-05.html">Урок 5. Тревога по уровню →</a></p>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+  <script src="course.js"></script>
+</body>
+</html>

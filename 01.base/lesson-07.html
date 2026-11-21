@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 7. Методы по расписанию — курс МПК-Пересвет</title>
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="index.html"><img class="nav-logo" src="pics/logo.svg" alt=""> Курс по платформе МПК-Пересвет</a>
+      <span>Урок 7 из 9</span>
+    </div>
+  </header>
+  <main class="wrap lesson">
+    <h1>Методы по расписанию</h1>
+    <div class="goal">
+      <div class="k">Чему учимся на этом уроке</div>
+      <ul>
+        <li>создавать расписание — источник событий по таймеру;</li>
+        <li>в дополнении — запускать метод по тревоге;</li>
+        <li>запускать метод по расписанию и передавать ему историю тега за прошедший период;</li>
+        <li>выгружать историю тега в файл CSV.</li>
+      </ul>
+    </div>
+    <div class="outcome">
+      <div class="k">Результат урока</div>
+      <p>Раз в минуту платформа вызывает метод, который считает среднюю мощность двигателя за прошедшую минуту и записывает её в тег «Средняя мощность». История этого тега выгружается в файл — получается отчёт за период.</p>
+    </div>
+    <p>Метод из урока 4 запускается, когда приходит новое значение тока. Но многие расчёты привязаны не к событию на объекте, а ко времени: итоги за час, сводка за смену, отчёт за сутки. Для них в модели есть <strong>расписания</strong>. Расписание ничего не считает само — оно с заданным шагом генерирует события, а методы подписываются на них так же, как на теги.</p>
+    <p>Имитатор из урока 6 должен работать: метод будет считать среднее по его данным.</p>
+
+    <section class="step">
+      <span class="num">1</span>
+      <h2>Что собираем</h2>
+      <table>
+        <thead>
+          <tr><th>Что</th><th>Где</th><th>Зачем</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Расписание «Каждую минуту»</td><td>корень «Расписания»</td><td>Раз в минуту генерирует событие</td></tr>
+          <tr><td>Тег «Средняя мощность»</td><td>объект «Насос»</td><td>Хранит среднюю мощность за каждую минуту</td></tr>
+          <tr><td>Функция <code>pump.avg_power</code></td><td>исполнитель <code>worker.py</code></td><td>Считает среднее по ряду значений мощности</td></tr>
+          <tr><td>Метод «Средняя за минуту»</td><td>тег «Средняя мощность»</td><td>Вызывает функцию по расписанию и передаёт ей мощность за минуту</td></tr>
+        </tbody>
+      </table>
+      <p>Минута выбрана, чтобы не ждать результата долго. Как сделать то же самое раз в час, рассказано в конце урока.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">2</span>
+      <h2>Расписание</h2>
+      <p>Нажмите «…» справа от корня «Расписания» и выберите <strong>Новое расписание</strong>.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/07-lesson-01.png" style="width:432px" alt="Меню корня «Расписания»: новое расписание, новая папка, тревоги">
+        <figcaption>Меню корня «Расписания».</figcaption>
+      </figure>
+      <p>В свойствах расписания задайте имя <code>Каждую минуту</code>, в поле «Периодичность» выберите «Минуты», «Длину периода» оставьте <code>1</code>. «Начало» уже заполнено, «Окончание» оставьте пустым — расписание будет работать бессрочно. Нажмите «Записать».</p>
+      <figure class="figure figure-shot">
+        <img src="pics/07-lesson-02.png" style="width:644px" alt="Свойства расписания: имя «Каждую минуту», начало, периодичность «Минуты», длина периода 1, окончание не задано">
+        <figcaption>Расписание: событие каждую минуту, без даты окончания.</figcaption>
+      </figure>
+      <p>События расписания приходят с шагом в одну минуту, отсчитанным от «Начала». Если «Начало» стоит на целой минуте, события приходят ровно в начале каждой минуты.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">3</span>
+      <h2>Тег и функция</h2>
+      <p>Создайте у «Насоса» тег <code>Средняя мощность</code> с единицами <code>кВт</code> — так же, как «Мощность» в уроке 4.</p>
+      <p>Теперь научим исполнитель считать среднее. Остановите его в терминале клавишами <code>Ctrl+C</code> и перезапишите <code>worker.py</code> в папке <code>~/pump-methods</code> командой ниже. В файле появилась вторая функция, <code>avg_power</code>, всё остальное прежнее:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>cat &gt; worker.py &lt;&lt;'EOF'</span>
+<span class="line">import asyncio</span>
+<span class="line">import math</span>
+<span class="line">import os</span>
+<span class="line"></span>
+<span class="line">from patio import AsyncExecutor, Registry</span>
+<span class="line">from patio_rabbitmq import RabbitMQBroker</span>
+<span class="line"></span>
+<span class="line">rpc = Registry(project="methods_app", auto_naming=False)</span>
+<span class="line"></span>
+<span class="line">VOLTAGE = 380   # напряжение сети, В</span>
+<span class="line">COS_PHI = 0.85  # коэффициент мощности двигателя</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">@rpc("pump.power")</span>
+<span class="line">async def power(current):</span>
+<span class="line">    if current is None:</span>
+<span class="line">        return {"error": "нет значения тока"}</span>
+<span class="line">    kw = math.sqrt(3) * VOLTAGE * current * COS_PHI / 1000</span>
+<span class="line">    print(f"ток {current:g} А -&gt; мощность {kw:.2f} кВт", flush=True)</span>
+<span class="line">    return round(kw, 2)</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">@rpc("pump.avg_power")</span>
+<span class="line">async def avg_power(response):</span>
+<span class="line">    points = response["data"][0]["data"]</span>
+<span class="line">    values = [y for x, y, q in points if y is not None]</span>
+<span class="line">    if not values:</span>
+<span class="line">        return {"error": "нет значений мощности"}</span>
+<span class="line">    avg = sum(values) / len(values)</span>
+<span class="line">    print(f"средняя мощность {avg:.2f} кВт по {len(values)} точкам", flush=True)</span>
+<span class="line">    return round(avg, 2)</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">async def main():</span>
+<span class="line">    async with AsyncExecutor(rpc, max_workers=4) as executor:</span>
+<span class="line">        async with RabbitMQBroker(executor, amqp_url=os.environ["amqp_url"]) as broker:</span>
+<span class="line">            print("Исполнитель подключён к платформе", flush=True)</span>
+<span class="line">            await broker.join()</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">asyncio.run(main())</span>
+<span class="line">EOF</span></code></pre>
+      <p>Функция получает ответ платформы на чтение тега — список точек <code>[метка времени, значение, качество]</code>, отбрасывает пустые значения и возвращает их среднее. Снова запустите исполнитель:</p>
+      <pre class="cmd"><code><span class="line"><span class="prompt">$ </span>.venv/bin/python worker.py</span></code></pre>
+      <p>Один исполнитель выполняет обе функции: <code>pump.power</code> и <code>pump.avg_power</code>.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">4</span>
+      <h2>Метод по расписанию</h2>
+      <p>Нажмите «…» справа от тега «Средняя мощность» и выберите <strong>Новый метод</strong>. Задайте имя <code>Средняя за минуту</code> и адрес <code>pump.avg_power</code>. Тип оставьте «Вычислительный».</p>
+      <p>Инициатор на этот раз не тег, а расписание. В блоке «Инициаторы» откройте вкладку <strong>Расписания</strong>, нажмите лупу, найдите <code>Каждую минуту</code> и нажмите якорь ⚓. Закройте окно.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/07-lesson-03.png" style="width:644px" alt="Свойства метода: имя «Средняя за минуту», адрес pump.avg_power, в инициаторах на вкладке «Расписания» — «Каждую минуту»">
+        <figcaption>Инициатор метода — расписание «Каждую минуту».</figcaption>
+      </figure>
+      <p>Откройте закладку <strong>Параметры</strong> и добавьте параметр кнопкой «+». Имя — <code>Мощность</code>, источник — «Данные тега(-ов)», лупой выберите тег «Насос → Мощность». Поиск найдёт и «Насос → Средняя мощность» — якорь нужен у первой строки. Функции нужно не одно значение, а ряд за минуту. Нажмите стрелку слева от подписи «Запрос:» — откроются ключи запроса — и заполните два из них:</p>
+      <ul>
+        <li><code>timeStep</code> — <code>5000000</code>: шаг между точками ряда, 5 секунд в микросекундах;</li>
+        <li><code>count</code> — <code>13</code>: число точек. 13 точек с шагом 5 секунд охватывают ровно минуту, от её начала до конца.</li>
+      </ul>
+      <p>Нажмите стрелку справа от строки URL: пробный запрос вернёт 13 точек «Мощности» с шагом 5 секунд, последняя — на текущий момент. Выражение JSONata не нужно: функция сама разбирает ответ.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/07-lesson-04.png" style="width:644px" alt="Параметр «Мощность»: тег «Мощность», в запросе count 13 и timeStep 5000000, ответ пробного запроса">
+        <figcaption>Параметр метода: 13 точек мощности с шагом 5 секунд.</figcaption>
+      </figure>
+      <p>Нажмите «Записать». Значок «Средней мощности» стал оранжевым: у тега появился вычислительный метод.</p>
+      <figure class="figure figure-shot">
+        <img src="pics/07-lesson-05.png" style="width:432px" alt="Дерево: у «Насоса» тег «Средняя мощность» с методом «Средняя за минуту», в корне «Расписания» — расписание «Каждую минуту»">
+        <figcaption>Тег «Средняя мощность», его метод и расписание.</figcaption>
+      </figure>
+      <details class="spoiler">
+        <summary>Почему ряд заканчивается в момент срабатывания расписания</summary>
+        <p>Как и в уроке 4, при вызове метода платформа подставляет в запрос параметра ключ <code>finish</code> — момент события. Для расписания это момент срабатывания. Запрос с <code>count</code> и <code>timeStep</code> возвращает <code>count</code> значений с шагом <code>timeStep</code>, последнее — на <code>finish</code>. Значения между записанными точками платформа вычисляет сама, поэтому шаг ряда не зависит от того, как часто писал имитатор, а простое среднее по ряду — это среднее по времени.</p>
+      </details>
+    </section>
+
+    <section class="step">
+      <span class="num">5</span>
+      <h2>Проверка расчёта</h2>
+      <p>Подождите минуту. В терминале исполнителя среди строк про мощность появится строка:</p>
+      <pre><code>средняя мощность 6.29 кВт по 13 точкам</code></pre>
+      <p>и будет появляться раз в минуту. Дайте методу поработать несколько минут.</p>
+    </section>
+
+    <section class="step">
+      <span class="num">6</span>
+      <h2>Отчёт за период</h2>
+      <p>Откройте тег «Средняя мощность», вкладку «Хранилище» и прочитайте историю: включите флажок <code>actual</code> и задайте <code>start</code> — например, на пять минут раньше текущего времени. В таблице по одной строке на каждую минуту, с меткой времени срабатывания расписания.</p>
+      <figure class="figure figure-shot figure-wide">
+        <img src="pics/07-lesson-06.png" style="width:780px" alt="Чтение тега «Средняя мощность»: по строке на каждую минуту, рядом с иконкой «Читать данные» — иконка «Сохранить в CSV»">
+        <figcaption>Средняя мощность по минутам.</figcaption>
+      </figure>
+      <p>Нажмите иконку с листом справа от «Читать данные» — <strong>Сохранить в CSV</strong>. Браузер сохранит файл с расширением <code>.csv</code>. В начале файла записаны тег и запрос, затем строка заголовка <code>x,y,q</code> и сами точки. Файл открывается в LibreOffice Calc или Excel — это и есть отчёт за выбранный период.</p>
+    </section>
+
+    <section class="check">
+      <h2>Проверка</h2>
+      <ul>
+        <li>В корне «Расписания» есть расписание «Каждую минуту» с шагом в одну минуту.</li>
+        <li>У «Насоса» есть тег «Средняя мощность» с оранжевым значком и методом «Средняя за минуту»: адрес <code>pump.avg_power</code>, инициатор — расписание, параметр «Мощность» с <code>count</code> 13 и <code>timeStep</code> 5000000.</li>
+        <li>Исполнитель раз в минуту печатает строку со средней мощностью.</li>
+        <li>История «Средней мощности» сохраняется в файл CSV.</li>
+      </ul>
+    </section>
+
+    <details class="addon">
+      <summary><span class="tag">Дополнение</span><span class="t">Итоги раз в час</span><span class="chev" aria-hidden="true"></span></summary>
+      <p>В настоящей системе среднюю мощность считают реже — например, раз в час. Для этого достаточно поменять три числа:</p>
+      <table>
+        <thead>
+          <tr><th>Где</th><th>Поле</th><th>Каждую минуту</th><th>Каждый час</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Расписание</td><td>Периодичность и длина периода</td><td>Минуты, 1</td><td>Часы, 1</td></tr>
+          <tr><td>Параметр метода</td><td><code>timeStep</code></td><td><code>5000000</code> (5 секунд)</td><td><code>300000000</code> (5 минут)</td></tr>
+          <tr><td>Параметр метода</td><td><code>count</code></td><td><code>13</code></td><td><code>13</code></td></tr>
+        </tbody>
+      </table>
+      <p>Код функции менять не нужно: она усредняет любой ряд. Чтобы события приходили ровно в начале часа, задайте «Начало» расписания на целый час, например <code>00:00</code>.</p>
+      <p>Так же устроены итоги за смену и за сутки. А чтобы получить энергию в кВт·ч, умножьте среднюю мощность в кВт на длительность периода в часах: для часового расписания эти числа совпадают.</p>
+    </details>
+
+    <details class="addon">
+      <summary><span class="tag">Дополнение</span><span class="t">Метод по тревоге</span><span class="chev" aria-hidden="true"></span></summary>
+      <p>Инициатором метода может быть и тревога. Посчитаем, сколько раз переполнялся бак: при каждом срабатывании тревоги «Высокий уровень» из урока 5 метод прибавит единицу к тегу «Переполнения».</p>
+      <h3>Тег и функция</h3>
+      <p>Создайте у «Насоса» тег <code>Переполнения</code> и выберите тип значений «Целый».</p>
+      <p>Остановите исполнитель (<code>Ctrl+C</code>) и откройте файл в редакторе: <code>nano worker.py</code>. Перед строкой <code>async def main():</code> вставьте функцию:</p>
+      <pre class="cmd" data-copy-title="Копировать код"><code><span class="line">@rpc("pump.count")</span>
+<span class="line">async def count(previous):</span>
+<span class="line">    total = (previous or 0) + 1</span>
+<span class="line">    print(f"уровень выше 90 %, переполнений: {total}", flush=True)</span>
+<span class="line">    return total</span></code></pre>
+      <p>Между функциями оставьте по две пустые строки, как в остальном файле. Сохраните файл (<code>Ctrl+O</code>, <code>Enter</code>), выйдите из редактора (<code>Ctrl+X</code>) и снова запустите исполнитель. Функция получает прежнее значение счётчика и возвращает его на единицу больше. В первый раз счётчик ещё пуст, и <code>previous</code> равен <code>None</code> — тогда отсчёт начинается с нуля.</p>
+      <h3>Метод</h3>
+      <p>Нажмите «…» справа от тега «Переполнения» и выберите <strong>Новый метод</strong>. Имя — <code>Счётчик переполнений</code>, адрес — <code>pump.count</code>. В блоке «Инициаторы» откройте вкладку <strong>Тревоги</strong>, нажмите лупу, найдите <code>Высокий</code> и нажмите якорь у строки «Насос → Уровень → Высокий уровень».</p>
+      <figure class="figure figure-shot">
+        <img src="pics/07-lesson-07.png" style="width:644px" alt="Свойства метода «Счётчик переполнений»: адрес pump.count, в инициаторах на вкладке «Тревоги» — тревога «Высокий уровень» с флажками «Срабатывание» (включён), «Пропадание» и «Квитирование»">
+        <figcaption>Инициатор метода — тревога «Высокий уровень», событие «Срабатывание».</figcaption>
+      </figure>
+      <p>У тревоги в инициаторах три флажка — события, по которым вызывается метод: <strong>Срабатывание</strong>, <strong>Пропадание</strong> и <strong>Квитирование</strong>. По умолчанию включено только срабатывание — то, что нужно счётчику.</p>
+      <p>На закладке «Параметры» добавьте параметр <code>Счётчик</code>: источник «Данные тега(-ов)», лупой выберите тег «Насос → Переполнения», в поле «JSONata к ответу» впишите <code>$.data[0].data[0][1]</code>, как в уроке 4. Метод читает собственный тег: на момент срабатывания тревоги в нём лежит прежнее значение счётчика. Нажмите «Записать».</p>
+      <h3>Проверка</h3>
+      <p>Уровень от имитатора поднимается выше 90 % примерно раз в пять минут. Каждый раз исполнитель печатает строку:</p>
+      <pre><code>уровень выше 90 %, переполнений: 1</code></pre>
+      <p>Прочитайте историю «Переполнений» с флажком <code>actual</code>: в ней по точке на каждое срабатывание тревоги.</p>
+      <figure class="figure figure-shot figure-wide">
+        <img src="pics/07-lesson-08.png" style="width:780px" alt="Чтение тега «Переполнения» с actual и start: значения 1 и 2">
+        <figcaption>Счётчик переполнений: точка на каждое срабатывание тревоги.</figcaption>
+      </figure>
+      <p>Метки времени точек совпадают со «Стартом» срабатываний в истории тревоги (урок 5, шаг 6): при вызове метода платформа подставляет в запрос параметра момент события тревоги, и результат записывается с той же меткой.</p>
+    </details>
+
+    <aside class="deeper">
+      <h2>В расширенном курсе</h2>
+      <ul>
+        <li><a href="../02.advanced/index.html#lesson-06">несколько параметров и несколько инициаторов у одного метода</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-11">расписания с датой окончания и разовые события</a>;</li>
+        <li><a href="../02.advanced/index.html#lesson-11">отчёты, которые метод формирует сам и отправляет по почте</a>.</li>
+      </ul>
+      <p>Расширенный курс готовится, ссылки выше ведут в его <a href="../02.advanced/index.html">программу</a>. Пока эти темы описаны в справочнике: <a href="https://mp-co-ru.github.io/peresvet/schedules.html">«Расписания»</a>, <a href="https://mp-co-ru.github.io/peresvet/methods.html">«Методы»</a>, <a href="https://mp-co-ru.github.io/peresvet/historical_data.html">«Исторические данные»</a>.</p>
+    </aside>
+
+    <p>Дальше в модели появится помещение с камерой: тег-видеопоток покажет, что происходит на станции.</p>
+    <p><a href="lesson-06.html">← Урок 6</a> · <a href="lesson-08.html">Урок 8. Камера помещения →</a></p>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="footer-logo" href="https://matchpoint-consulting.ru/"><img src="pics/mpc-logo.svg" alt="Логотип ООО Матч Поинт Консалтинг"></a>
+      <p class="footer-contacts">Тел.: <a href="tel:+74993930040">+7 (499) 393-00-40</a> · E-mail: <a href="mailto:info@mp-co.ru">info@mp-co.ru</a></p>
+      <p>© 2023-2026 <a href="https://matchpoint-consulting.ru/">ООО «МПК»</a></p>
+    </div>
+  </footer>
+  <script src="course.js"></script>
+</body>
+</html>
